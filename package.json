@@ -1,0 +1,25 @@
+{
+  "name": "ad4m-host",
+  "version": "0.0.1",
+  "description": "Self hosting ad4m service",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kaichaosun/ad4m-host.git"
+  },
+  "keywords": [
+    "Holochain"
+  ],
+  "author": "Kaichao Sun",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kaichaosun/ad4m-host/issues"
+  },
+  "homepage": "https://github.com/kaichaosun/ad4m-host#readme",
+  "dependencies": {
+    "@perspect3vism/ad4m-executor": "^0.1.23"
+  }
+}
