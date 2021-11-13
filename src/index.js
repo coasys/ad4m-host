@@ -29,8 +29,8 @@ const ad4mClient = new Ad4mClient(apolloClient);
 function main() {
   Ad4mExecutor.init({
     appDataPath: getAppDataPath("ad4m-host"),
-    resourcePath: path.join(__dirname, ".."),
-    appDefaultLangPath: DOWNLOADED_LANGS_PATH,
+    resourcePath: path.join(__dirname, "../temp/binary"),
+    appDefaultLangPath: path.join(__dirname, "../temp/languages"),
     ad4mBootstrapLanguages: {
       agents: "agent-expression-store",
       languages: "languages",
@@ -40,10 +40,7 @@ function main() {
       languages: [],
       perspectives: [],
     },
-    appBuiltInLangs: [
-      "social-context",
-      "note-ipfs"
-    ],
+    appBuiltInLangs: [],
     mocks: false,
     hcUseMdns: false
   }).then((ad4mCore) => {
