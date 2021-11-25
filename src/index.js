@@ -3,6 +3,7 @@ import { ApolloClient, InMemoryCache } from "@apollo/client";
 import { WebSocketLink } from "@apollo/client/link/ws";
 import { Ad4mClient } from "@perspect3vism/ad4m";
 import Ad4mExecutor from "@perspect3vism/ad4m-executor";
+import path from 'path';
 
 import getAppDataPath from "appdata-path";
 
@@ -26,9 +27,9 @@ import getAppDataPath from "appdata-path";
 
 // const ad4mClient = new Ad4mClient(apolloClient);
 
-function main() {
+export function serve() {
   Ad4mExecutor.init({
-    appDataPath: getAppDataPath("ad4m-host"),
+    appDataPath: getAppDataPath(),
     resourcePath: path.join(__dirname, "../temp/binary"),
     appDefaultLangPath: path.join(__dirname, "../temp/languages"),
     ad4mBootstrapLanguages: {
@@ -55,5 +56,3 @@ function main() {
     });
   });
 }
-
-main();
