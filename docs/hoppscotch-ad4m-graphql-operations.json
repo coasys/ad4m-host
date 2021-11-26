@@ -1,0 +1,51 @@
+[
+  {
+    "v": 1,
+    "name": "ad4m",
+    "folders": [],
+    "requests": [
+      {
+        "v": 1,
+        "name": "ad4m agent status",
+        "url": "http://127.0.0.1:4000/graphql",
+        "headers": [
+          {
+            "value": "",
+            "key": "",
+            "active": true
+          }
+        ],
+        "query": "query agentStatus {\n  agentStatus {\n    did\n    didDocument\n    error\n    isInitialized\n    isUnlocked\n  }\n}\n",
+        "variables": "{ \"id\": \"1\" }"
+      },
+      {
+        "v": 1,
+        "name": "ad4m agent unlock",
+        "url": "http://127.0.0.1:4000/graphql",
+        "headers": [
+          {
+            "value": "",
+            "key": "",
+            "active": true
+          }
+        ],
+        "query": "mutation agentUnlock($passphrase: String!) {\n  agentUnlock(passphrase: $passphrase) {\n    isInitialized\n    isUnlocked\n    did\n    error\n  }\n}\n",
+        "variables": "{ \"passphrase\": \"123456\" }"
+      },
+      {
+        "v": 1,
+        "name": "ad4m publish shortform language",
+        "url": "http://127.0.0.1:4000/graphql",
+        "headers": [
+          {
+            "value": "",
+            "key": "",
+            "active": true
+          }
+        ],
+        "query": "mutation languagePublish($languageMeta: LanguageMetaInput!, $languagePath: String!) {\n  languagePublish(languageMeta: $languageMeta, languagePath: $languagePath) {\n    name\n    address\n    author\n    description\n    possibleTemplateParams\n    sourceCodeLink\n    templateAppliedParams\n    templateSourceLanguageAddress\n    templated\n  }\n}\n",
+        "variables": "{ \n  \"languageMeta\": {\n    \"name\": \"shortform-expression\",\n    \"description\": \"Shortform expression for flux application\",\n    \"possibleTemplateParams\": [\"uid\", \"name\"],\n    \"sourceCodeLink\": \"https://github.com/juntofoundation/ad4m-languages\"\n  },\n  \"languagePath\": \"/Users/kaichaosun/github/holo/ad4m-languages/release/shortform/bundle.js\"\n}"
+      }
+    ]
+  }
+]
