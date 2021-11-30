@@ -35,7 +35,7 @@ export function serve() {
     ad4mBootstrapLanguages: {
       agents: "agent-expression-store",
       languages: "languages",
-      neighbourhoods: "neighbourhoods-store"
+      neighbourhoods: "neighbourhood-store"
     },
     ad4mBootstrapFixtures: {
       languages: [],
