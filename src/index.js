@@ -1,32 +1,9 @@
 
-import { ApolloClient, InMemoryCache } from "@apollo/client";
-import { WebSocketLink } from "@apollo/client/link/ws";
-import { Ad4mClient } from "@perspect3vism/ad4m";
 import Ad4mExecutor from "@perspect3vism/ad4m-executor";
 import path from 'path';
 import fs from 'fs';
 
 import getAppDataPath from "appdata-path";
-
-// const apolloClient = new ApolloClient({
-//   link: new WebSocketLink({
-//     uri: `ws://localhost:4000/graphql`,
-//     options: {
-//       reconnect: true,
-//     },
-//   }),
-//   cache: new InMemoryCache({}),
-//   defaultOptions: {
-//     watchQuery: {
-//       errorPolicy: "ignore",
-//     },
-//     query: {
-//       errorPolicy: "all",
-//     },
-//   },
-// });
-
-// const ad4mClient = new Ad4mClient(apolloClient);
 
 export function serve() {
   Ad4mExecutor.init({

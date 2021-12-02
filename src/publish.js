@@ -2,6 +2,7 @@
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
 import { WebSocketLink } from "@apollo/client/link/ws";
 import WebSocket from "ws";
+import { CONFIG } from "./config"
 
 const client = new ApolloClient({
     link: new WebSocketLink({
@@ -48,6 +49,29 @@ export async function publish() {
                 }
             }
         `,
-        variables: { "passphrase": "123456" }
+        variables: { "passphrase": process.env.AGENT_PASSWORD }   // change to your password
     }).then(result => console.log(result));
+
+    const languages = CONFIG.languages;
+
+    for (const lang of languages) {
+        await client.mutate({
+            mutation: gql`
+                mutation languagePublish($languageMeta: LanguageMetaInput!, $languagePath: String!) {
+                    languagePublish(languageMeta: $languageMeta, languagePath: $languagePath) {
+                        name
+                        address
+                        author
+                        description
+                        possibleTemplateParams
+                        sourceCodeLink
+                        templateAppliedParams
+                        templateSourceLanguageAddress
+                        templated
+                    }
+                }
+            `,
+            variables: lang   // change to your password
+        }).then(result => console.log(result));
+    }
 }
