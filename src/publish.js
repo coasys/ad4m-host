@@ -72,6 +72,6 @@ export async function publish() {
                 }
             `,
             variables: lang   // change to your password
-        }).then(result => console.log(result));
+        }).then(result => console.log(JSON.stringify(result, null, 2)));
     }
 }

@@ -26,13 +26,21 @@ Run ad4m service,
 npm run ad4m
 ```
 
+Publish released langugages,
+* start ad4m service first
+* change src/config.js to your langugages
+* run publish with
+```shell
+AGENT_PASSWORD=your-password npm run publish
+```
+
 ## Operate with GraphQL
 
 A handly online GraphQL client, https://hoppscotch.io/graphql. You can also save the querys and import/export the collections.
 
 You can also use this pre-exported [collection](docs/hoppscotch-ad4m-graphql-operations.json).
 
-### Examples,
+### Examples
 
 **query agent status**,
 
