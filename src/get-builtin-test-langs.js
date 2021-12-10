@@ -12,7 +12,7 @@ const languages = {
   },
   languages: {
       targetDnaName: "languages",
-      bundle: "https://github.com/juntofoundation/language-persistence/releases/download/0.0.15/bundle.js",
+      bundle: "https://github.com/juntofoundation/language-persistence/releases/download/0.0.16/bundle.js",
   },
   "neighbourhood-store": {
     targetDnaName: "neighbourhood-store",
