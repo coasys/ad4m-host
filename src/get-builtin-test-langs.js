@@ -12,15 +12,11 @@ const languages = {
   },
   languages: {
       targetDnaName: "languages",
-      bundle: "https://github.com/juntofoundation/language-persistence/releases/download/0.0.16/bundle.js",
+      bundle: "https://github.com/juntofoundation/language-persistence/releases/download/0.0.18/bundle.js",
   },
   "neighbourhood-store": {
     targetDnaName: "neighbourhood-store",
-    //dna: "https://github.com/perspect3vism/neighbourhood-language/releases/download/0.0.2/neighbourhood-store.dna",
-    bundle: "https://github.com/perspect3vism/neighbourhood-language/releases/download/0.0.3/bundle.js",
-  },
-  "social-context": {
-    bundle: "https://github.com/juntofoundation/Social-Context/releases/download/0.0.18/bundle.js",
+    bundle: "https://github.com/perspect3vism/neighbourhood-language/releases/download/0.0.5/bundle.js",
   },
   "note-ipfs": {
     bundle: "https://github.com/perspect3vism/lang-note-ipfs/releases/download/0.0.1/bundle.js",
