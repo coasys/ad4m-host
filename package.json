@@ -25,8 +25,8 @@
   "homepage": "https://github.com/kaichaosun/ad4m-host#readme",
   "dependencies": {
     "@apollo/client": "^3.3.21",
-    "@perspect3vism/ad4m": "^0.1.21",
-    "@perspect3vism/ad4m-executor": "^0.1.26",
+    "@perspect3vism/ad4m": "^0.1.22",
+    "@perspect3vism/ad4m-executor": "^0.1.27",
     "appdata-path": "^1.0.0",
     "esm": "^3.2.25",
     "fs-extra": "^9.1.0",
