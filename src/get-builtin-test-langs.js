@@ -16,7 +16,7 @@ const languages = {
   },
   "neighbourhood-store": {
     targetDnaName: "neighbourhood-store",
-    bundle: "https://github.com/perspect3vism/neighbourhood-language/releases/download/0.0.5/bundle.js",
+    bundle: "https://github.com/juntofoundation/neighbourhood-language/releases/download/0.0.5/bundle.js",
   },
   "note-ipfs": {
     bundle: "https://github.com/perspect3vism/lang-note-ipfs/releases/download/0.0.1/bundle.js",
