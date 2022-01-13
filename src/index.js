@@ -42,7 +42,7 @@ export function serve() {
 }
 
 export function serveLauncher() {
-  Ad4mExecutor.initForLauncher({
+  Ad4mExecutor.init({
     appDataPath: getAppDataPath(),
     resourcePath: path.join(__dirname, "../temp/binary"),
     appDefaultLangPath: path.join(__dirname, "../temp/languages"),
@@ -64,8 +64,9 @@ export function serveLauncher() {
     appBuiltInLangs: [],
     mocks: false,
     gqlPort: 4000,
-    hcPortAdmin: 22799,
-    hcPortApp: 24207,
+    hcPortAdmin: 17248,
+    hcPortApp: 15599,
+    connectHolochain: true,
   }
   ).then((ad4mCore) => {
     ad4mCore.waitForAgent().then(async() => {
