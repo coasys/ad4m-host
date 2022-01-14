@@ -2,7 +2,48 @@
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
 import { WebSocketLink } from "@apollo/client/link/ws";
 import WebSocket from "ws";
-import { CONFIG } from "./config"
+
+const CONFIG = {
+    // Change to your own released languages
+    languages: [
+        { 
+            "languageMeta": {
+              "name": "shortform-expression",
+              "description": "Shortform expression for flux application",
+              "possibleTemplateParams": ["uid", "name"],
+              "sourceCodeLink": "https://github.com/juntofoundation/ad4m-languages"
+            },
+            "languagePath": "/Users/kaichaosun/github/holo/ad4m-languages/release/shortform/bundle.js"
+        },
+        { 
+            "languageMeta": {
+              "name": "group-expression",
+              "description": "Group expression for flux application",
+              "possibleTemplateParams": ["uid", "name"],
+              "sourceCodeLink": "https://github.com/juntofoundation/ad4m-languages"
+            },
+            "languagePath": "/Users/kaichaosun/github/holo/ad4m-languages/release/group/bundle.js"
+        },
+        { 
+            "languageMeta": {
+              "name": "profile-expression",
+              "description": "Profile expression for flux application",
+              "possibleTemplateParams": ["uid", "name"],
+              "sourceCodeLink": "https://github.com/jdeepee/profiles"
+            },
+            "languagePath": "/Users/kaichaosun/github/holo/josh/profiles/build/bundle.js"
+        },
+        { 
+            "languageMeta": {
+              "name": "social-context",
+              "description": "Link sharing for ad4m neighbourhoods",
+              "possibleTemplateParams": ["uid", "name"],
+              "sourceCodeLink": "https://github.com/juntofoundation/Social-Context"
+            },
+            "languagePath": "/Users/kaichaosun/Downloads/bundle.js"
+        }
+    ]
+}
 
 const client = new ApolloClient({
     link: new WebSocketLink({
@@ -23,7 +64,7 @@ const client = new ApolloClient({
     },
 });
 
-export async function publish() {
+async function publish() {
     await client.query({
         query: gql`
             query agentStatus {
@@ -75,3 +116,5 @@ export async function publish() {
         }).then(result => console.log(JSON.stringify(result, null, 2)));
     }
 }
+
+publish();

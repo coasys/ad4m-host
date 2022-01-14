@@ -8,10 +8,10 @@
   "scripts": {
     "build": "tsc",
     "build-holochain": "echo \"\n\n\n\nThis next stage will fail if Nix is not installed!! You can install here: https://nixos.wiki/wiki/Nix_Installation_Guide\" && sleep 5 && nix-shell --run ./scripts/copy-hc.sh",
+    "get-languages": "node scripts/get-builtin-test-langs.js",
+    "publish-languages": "node scripts/publish-langs",
     "ad4m": "node bin/ad4m",
     "serve-launcher": "node bin/serve-launcher",
-    "get-languages": "node src/get-builtin-test-langs.js",
-    "publish": "node bin/publish",
     "package": "pkg . --targets node14-macos-x64 --output dist/ad4m"
   },
   "pkg": {

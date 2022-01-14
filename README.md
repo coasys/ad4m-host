@@ -28,10 +28,10 @@ npm run ad4m
 
 Publish released langugages,
 * start ad4m service first
-* change src/config.js to your langugages
+* change scripts/publish-langs.js to your langugages
 * run publish with
 ```shell
-AGENT_PASSWORD=your-password npm run publish
+AGENT_PASSWORD=your-password npm run publish-languages
 ```
 
 ## Operate with GraphQL
