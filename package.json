@@ -4,11 +4,18 @@
   "description": "Self hosting ad4m service",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "build-holochain": "echo \"\n\n\n\nThis next stage will fail if Nix is not installed!! You can install here: https://nixos.wiki/wiki/Nix_Installation_Guide\" && sleep 5 && nix-shell --run ./scripts/copy-hc.sh",
     "ad4m": "node bin/ad4m",
+    "serve-launcher": "node bin/serve-launcher",
     "get-languages": "node src/get-builtin-test-langs.js",
-    "publish": "node bin/publish"
+    "publish": "node bin/publish",
+    "package": "pkg -t macos src/ad4m"
+  },
+  "pkg": {
+    "assets": [
+      "src/**/*",
+      "temp/**/*"
+    ]
   },
   "repository": {
     "type": "git",
@@ -26,12 +33,15 @@
   "dependencies": {
     "@apollo/client": "^3.3.21",
     "@perspect3vism/ad4m": "^0.1.22",
-    "@perspect3vism/ad4m-executor": "file:../ad4m-executor",
+    "@perspect3vism/ad4m-executor": "^0.1.27",
     "appdata-path": "^1.0.0",
     "esm": "^3.2.25",
     "fs-extra": "^9.1.0",
     "node-wget-js": "^1.0.1",
     "unzipper": "^0.10.11",
     "ws": "^8.3.0"
+  },
+  "devDependencies": {
+    "pkg": "^5.5.2"
   }
 }
