@@ -1,5 +1,5 @@
 node_modules
 temp
 .DS_Store
-ad4m*
+dist
 build
