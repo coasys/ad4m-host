@@ -2,20 +2,20 @@
   "name": "ad4m-host",
   "version": "0.0.1",
   "description": "Self hosting ad4m service",
-  "main": "index.js",
+  "bin": {
+    "ad4m": "./build/cli.js"
+  },
   "scripts": {
     "build-holochain": "echo \"\n\n\n\nThis next stage will fail if Nix is not installed!! You can install here: https://nixos.wiki/wiki/Nix_Installation_Guide\" && sleep 5 && nix-shell --run ./scripts/copy-hc.sh",
     "ad4m": "node bin/ad4m",
     "serve-launcher": "node bin/serve-launcher",
     "get-languages": "node src/get-builtin-test-langs.js",
     "publish": "node bin/publish",
-    "package": "pkg -t macos src/ad4m"
+    "package": "pkg . --targets node14-macos-x64 --output dist/ad4m"
   },
   "pkg": {
-    "assets": [
-      "src/**/*",
-      "temp/**/*"
-    ]
+    "scripts": "build/**/*.js",
+    "outputPath": "dist"
   },
   "repository": {
     "type": "git",
@@ -39,9 +39,13 @@
     "fs-extra": "^9.1.0",
     "node-wget-js": "^1.0.1",
     "unzipper": "^0.10.11",
-    "ws": "^8.3.0"
+    "ws": "^8.3.0",
+    "yargs": "^17.3.1"
   },
   "devDependencies": {
-    "pkg": "^5.5.2"
+    "@types/node": "^17.0.8",
+    "@types/yargs": "^17.0.8",
+    "pkg": "^5.5.2",
+    "typescript": "^4.5.4"
   }
 }
