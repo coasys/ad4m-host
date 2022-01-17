@@ -34,6 +34,27 @@ Publish released langugages,
 AGENT_PASSWORD=your-password npm run publish-languages
 ```
 
+## Build
+
+Build executable,
+
+```shell
+npm run build
+npm run package
+```
+
+To run the build executable, first init the required the binaries like holochain, lair-keystore and hc.
+
+```shell
+./dist/ad4m init
+```
+
+Then start the ad4m service, if pass the optional parameter `connectHolochain`, you need to provide the running holochain admian and app interface port.
+
+```shell
+./dist/ad4m serve
+```
+
 ## Operate with GraphQL
 
 A handly online GraphQL client, https://hoppscotch.io/graphql. You can also save the querys and import/export the collections.
