@@ -1,4 +1,4 @@
-import type { Arguments, CommandBuilder } from 'yargs';
+import type { Arguments, Argv } from 'yargs';
 import { init } from "ad4m-executor-test";
 import path from 'path';
 import fs from 'fs';
@@ -14,7 +14,7 @@ type Options = {
 export const command: string = 'serve';
 export const desc: string = 'Serve ad4m service at given port';
 
-export const builder: CommandBuilder<Options, Options> = (yargs) =>
+export const builder = (yargs: Argv) =>
   yargs
     .options({
       graphqlPort: { type: 'number' },

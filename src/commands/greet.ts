@@ -1,4 +1,4 @@
-import type { Arguments, CommandBuilder } from 'yargs';
+import type { Arguments, Argv } from 'yargs';
 
 type Options = {
   name: string;
@@ -8,7 +8,7 @@ type Options = {
 export const command: string = 'greet <name>';
 export const desc: string = 'Greet <name> with Hello';
 
-export const builder: CommandBuilder<Options, Options> = (yargs) =>
+export const builder = (yargs: Argv) =>
   yargs
     .options({
       upper: { type: 'boolean' },

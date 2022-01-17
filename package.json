@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Self hosting ad4m service",
   "bin": {
-    "ad4m": "./build/cli.js"
+    "ad4m": "./build/index.js"
   },
   "scripts": {
     "build": "tsc",
@@ -12,11 +12,12 @@
     "publish-languages": "node scripts/publish-langs",
     "ad4m": "node bin/ad4m",
     "serve-launcher": "node bin/serve-launcher",
-    "package": "pkg . --targets node14-macos-x64 --output dist/ad4m"
+    "package": "pkg . --targets node14-macos-x64 --output dist/ad4m",
+    "postinstall": "rm -rf node_modules/ipfs-core-types/src"
   },
   "pkg": {
-    "scripts": "build/**/*.js",
     "assets": [
+      "build/**/*",
       "temp/**/*"
     ],
     "outputPath": "dist"
@@ -37,7 +38,7 @@
   "dependencies": {
     "@apollo/client": "^3.3.21",
     "@perspect3vism/ad4m": "^0.1.22",
-    "ad4m-executor-test": "0.1.1",
+    "ad4m-executor-test": "0.1.28",
     "appdata-path": "^1.0.0",
     "esm": "^3.2.25",
     "fs-extra": "^9.1.0",
