@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Self hosting ad4m service",
   "bin": {
-    "ad4m": "./build/index.js"
+    "ad4m": "build/cli.js"
   },
   "scripts": {
     "build": "tsc",
@@ -12,15 +12,19 @@
     "publish-languages": "node scripts/publish-langs",
     "ad4m": "node bin/ad4m",
     "serve-launcher": "node bin/serve-launcher",
-    "package": "pkg . --targets node14-macos-x64 --output dist/ad4m",
+    "package": "pkg . -o dist/ad4m -t node16-macos-x64 --public-packages \"*\" --no-bytecode",
     "postinstall": "rm -rf node_modules/ipfs-core-types/src"
   },
   "pkg": {
     "assets": [
       "build/**/*",
-      "temp/**/*"
+      "temp/**/*",
+      "node_modules/leveldown/**/*"
     ],
-    "outputPath": "dist"
+    "outputPath": "dist",
+    "patches": {
+      "node_modules/leveldown/binding.js": []
+    }
   },
   "repository": {
     "type": "git",
