@@ -3,6 +3,32 @@ import { init } from "ad4m-executor-test";
 import path from 'path';
 import fs from 'fs';
 import { getAppDataPath } from "appdata-path";
+import utils from 'util';
+
+const copyFile = utils.promisify(fs.copyFile);
+const chmod = utils.promisify(fs.chmod);
+
+async function copy(source, target) {
+  //@ts-ignore
+  if (process.pkg) {
+    // use stream pipe to reduce memory usage
+    // when loading a large file into memory.
+    // new Promise((resolve, reject) => {
+    //   fs.createReadStream(source)
+    //     .pipe(fs.createWriteStream(target))
+    //     .on("error", reject)
+    //     .on("finish", resolve)
+    // })
+    fs.createReadStream(source).pipe(fs.createWriteStream(target));
+    await delay(5000);
+  } else {
+    await copyFile(source, target);
+  }
+}
+
+function delay(ms: number) {
+  return new Promise( resolve => setTimeout(resolve, ms) );
+}
 
 type Options = {
   graphqlPort?: number;
@@ -23,12 +49,33 @@ export const builder = (yargs: Argv) =>
       connectHolochain: { type: "boolean" }
     });
 
-export const handler = (argv: Arguments<Options>): void => {
+export const handler = async (argv: Arguments<Options>): Promise<void> => {
   const { graphqlPort, hcAdminPort, hcAppPort, connectHolochain } = argv;
 
-  init({
+  // Copy binaries from pkg to os file system, https://github.com/vercel/pkg/issues/342
+  const binaryPath = path.join(getAppDataPath(), 'ad4m-host/binary');
+  if(!fs.existsSync(binaryPath)) {
+    fs.mkdirSync(binaryPath, { recursive: true })
+  }
+
+  const holochainSource = path.join(__dirname, '../../temp/binary/holochain');
+  const holochaintarget = path.join(binaryPath, 'holochain');
+  await copy(holochainSource, holochaintarget);
+  await chmod(holochaintarget, '755');
+
+  const lairSource = path.join(__dirname, '../../temp/binary/lair-keystore');
+  const lairTarget = path.join(binaryPath, 'lair-keystore');
+  await copy(lairSource, lairTarget);
+  await chmod(lairTarget, '755');
+
+  const hcSource = path.join(__dirname, '../../temp/binary/hc');
+  const hcTarget = path.join(binaryPath, 'hc');
+  await copy(hcSource, hcTarget);
+  await chmod(hcTarget, '755');
+
+  const config = {
     appDataPath: getAppDataPath(),
-    resourcePath: path.join(__dirname, "../../temp/binary"),
+    resourcePath: binaryPath,
     appDefaultLangPath: path.join(__dirname, "../../temp/languages"),
     ad4mBootstrapLanguages: {
       agents: "agent-expression-store",
@@ -51,15 +98,13 @@ export const handler = (argv: Arguments<Options>): void => {
     hcPortAdmin: hcAdminPort,
     hcPortApp: hcAppPort,
     connectHolochain,
-  }).then((ad4mCore) => {
-    ad4mCore.waitForAgent().then(async() => {
-      console.log("Agent has been init'd. Controllers now starting init...");
-      ad4mCore.initControllers();
-      console.log("Controllers init complete. Initializing languages...");
-
-      await ad4mCore.initLanguages();
-      console.log("All languages initialized.");
-
-    });
-  });
+  };
+  const ad4mCore = await init(config);
+  
+  await ad4mCore.waitForAgent();
+  console.log("Agent has been init'd. Controllers now starting init...");
+  ad4mCore.initControllers();
+  console.log("Controllers init complete. Initializing languages...");
+  await ad4mCore.initLanguages();
+  console.log("All languages initialized.");
 };

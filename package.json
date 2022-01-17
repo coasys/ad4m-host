@@ -16,8 +16,8 @@
     "postinstall": "rm -rf node_modules/ipfs-core-types/src"
   },
   "pkg": {
+    "scripts": "build/**/*",
     "assets": [
-      "build/**/*",
       "temp/**/*",
       "node_modules/leveldown/**/*"
     ],
