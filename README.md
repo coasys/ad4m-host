@@ -28,10 +28,31 @@ npm run ad4m
 
 Publish released langugages,
 * start ad4m service first
-* change src/config.js to your langugages
+* change scripts/publish-langs.js to your langugages
 * run publish with
 ```shell
-AGENT_PASSWORD=your-password npm run publish
+AGENT_PASSWORD=your-password npm run publish-languages
+```
+
+## Build
+
+Build executable,
+
+```shell
+npm run build
+npm run package
+```
+
+To run the build executable, first init the required the binaries like holochain, lair-keystore and hc.
+
+```shell
+./dist/ad4m init
+```
+
+Then start the ad4m service, if pass the optional parameter `connectHolochain`, you need to provide the running holochain admian and app interface port.
+
+```shell
+./dist/ad4m serve
 ```
 
 ## Operate with GraphQL

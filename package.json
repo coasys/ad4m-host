@@ -2,13 +2,29 @@
   "name": "ad4m-host",
   "version": "0.0.1",
   "description": "Self hosting ad4m service",
-  "main": "index.js",
+  "bin": {
+    "ad4m": "build/cli.js"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
     "build-holochain": "echo \"\n\n\n\nThis next stage will fail if Nix is not installed!! You can install here: https://nixos.wiki/wiki/Nix_Installation_Guide\" && sleep 5 && nix-shell --run ./scripts/copy-hc.sh",
+    "get-languages": "node scripts/get-builtin-test-langs.js",
+    "publish-languages": "node scripts/publish-langs",
     "ad4m": "node bin/ad4m",
-    "get-languages": "node src/get-builtin-test-langs.js",
-    "publish": "node bin/publish"
+    "serve-launcher": "node bin/serve-launcher",
+    "package": "pkg . -o dist/ad4m -t node16-macos-x64 --public-packages \"*\" --no-bytecode",
+    "postinstall": "rm -rf node_modules/ipfs-core-types/src"
+  },
+  "pkg": {
+    "scripts": "build/**/*",
+    "assets": [
+      "temp/**/*",
+      "node_modules/leveldown/**/*"
+    ],
+    "outputPath": "dist",
+    "patches": {
+      "node_modules/leveldown/binding.js": []
+    }
   },
   "repository": {
     "type": "git",
@@ -26,12 +42,20 @@
   "dependencies": {
     "@apollo/client": "^3.3.21",
     "@perspect3vism/ad4m": "^0.1.22",
-    "@perspect3vism/ad4m-executor": "^0.1.27",
+    "ad4m-executor-test": "0.1.28",
     "appdata-path": "^1.0.0",
     "esm": "^3.2.25",
     "fs-extra": "^9.1.0",
     "node-wget-js": "^1.0.1",
     "unzipper": "^0.10.11",
-    "ws": "^8.3.0"
+    "ws": "^8.3.0",
+    "yargs": "^17.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.8",
+    "@types/yargs": "^17.0.8",
+    "@vercel/ncc": "^0.33.1",
+    "pkg": "^5.5.2",
+    "typescript": "^4.5.4"
   }
 }
