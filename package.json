@@ -19,7 +19,8 @@
     "scripts": "build/**/*",
     "assets": [
       "temp/**/*",
-      "node_modules/leveldown/**/*"
+      "node_modules/leveldown/**/*",
+      "node_modules/ts-invariant/**/*"
     ],
     "outputPath": "dist",
     "patches": {
@@ -41,12 +42,13 @@
   "homepage": "https://github.com/kaichaosun/ad4m-host#readme",
   "dependencies": {
     "@apollo/client": "^3.3.21",
-    "@perspect3vism/ad4m": "^0.1.22",
+    "@perspect3vism/ad4m": "^0.1.24",
     "ad4m-executor-test": "0.1.28",
     "appdata-path": "^1.0.0",
     "esm": "^3.2.25",
     "fs-extra": "^9.1.0",
     "node-wget-js": "^1.0.1",
+    "readline-sync": "^1.4.10",
     "unzipper": "^0.10.11",
     "ws": "^8.3.0",
     "yargs": "^17.3.1"
