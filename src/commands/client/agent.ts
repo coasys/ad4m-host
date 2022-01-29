@@ -40,7 +40,7 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
       break;
   }
 
-  process.exit(0);
+  process.exit();
 };
 
 async function generate(ad4mClient: Ad4mClient, verbose: boolean) {
@@ -60,7 +60,6 @@ async function lock(ad4mClient: Ad4mClient, verbose: boolean) {
   // Passphrase not needed
   const agentStatus = await ad4mClient.agent.lock("");
   prettify(agentStatus);
-  process.exit(0);
 }
 
 async function unlock(ad4mClient: Ad4mClient, verbose: boolean) {
@@ -71,7 +70,6 @@ async function unlock(ad4mClient: Ad4mClient, verbose: boolean) {
   const passphrase = readPassphrase();
   const agentStatus = await ad4mClient.agent.unlock(passphrase);
   prettify(agentStatus);
-  process.exit(0);
 }
 
 async function status(ad4mClient: Ad4mClient, verbose: boolean) {
@@ -81,7 +79,6 @@ async function status(ad4mClient: Ad4mClient, verbose: boolean) {
 
   const agentStatus = await ad4mClient.agent.status();
   prettify(agentStatus);
-  process.exit(0);
 }
 
 async function me(ad4mClient: Ad4mClient, verbose: boolean) {
@@ -91,5 +88,4 @@ async function me(ad4mClient: Ad4mClient, verbose: boolean) {
 
   const agent = await ad4mClient.agent.me();
   prettify(agent);
-  process.exit(0);
 }

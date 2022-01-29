@@ -19,5 +19,5 @@ export const handler = (argv: Arguments<Options>): void => {
   const { name, upper } = argv;
   const greeting = `Hello, ${name}!`;
   process.stdout.write(upper ? greeting.toUpperCase() : greeting);
-  process.exit(0);
+  process.exit();
 };

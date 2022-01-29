@@ -15,6 +15,10 @@ import {
   builder as agentBuilder, handler as agentHandler,
 } from './commands/client/agent';
 import {
+  command as languagesCommand, desc as languagesDesc,
+  builder as languagesBuilder, handler as languagesHandler,
+} from './commands/client/languages';
+import {
   command as initCommand, desc as initDesc,
   builder as initBuilder, handler as initHandler,
 } from './commands/init';
@@ -23,6 +27,7 @@ yargs(hideBin(process.argv))
   .command(greetCommand, greetDesc, greetBuilder, greetHandler)
   .command(serveCommand, serveDesc, serveBuilder, serveHandler)
   .command(agentCommand, agentDesc, agentBuilder, agentHandler)
+  .command(languagesCommand, languagesDesc, languagesBuilder, languagesHandler)
   .command(initCommand, initDesc, initBuilder, initHandler)
   // Enable strict mode.
   .strict()

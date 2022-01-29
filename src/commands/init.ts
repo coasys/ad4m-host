@@ -66,5 +66,5 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
   await copy(hcSource, hcTarget);
   await chmod(hcTarget, '755');
 
-  process.exit(0);
+  process.exit();
 };
