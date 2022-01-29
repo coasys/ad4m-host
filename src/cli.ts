@@ -13,7 +13,7 @@ import {
 import {
   command as agentCommand, desc as agentDesc,
   builder as agentBuilder, handler as agentHandler,
-} from './commands/agent';
+} from './commands/client/agent';
 import {
   command as initCommand, desc as initDesc,
   builder as initBuilder, handler as initHandler,
@@ -28,4 +28,9 @@ yargs(hideBin(process.argv))
   .strict()
   // Useful aliases.
   .alias({ h: 'help' })
+  .fail((msg, err) => {
+    console.error('Running command with error: ', msg);
+    console.error(err.message);
+    process.exit(1);
+  })
   .argv;
