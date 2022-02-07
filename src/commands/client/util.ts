@@ -5,6 +5,11 @@ import WebSocket from 'ws';
 import ReadlineSync from 'readline-sync';
 import util from 'util';
 
+export type CommonOptions = {
+  server?: string;
+  verbose?: boolean;
+}
+
 export function buildAd4mClient(server: string): Ad4mClient {
   let apolloClient = new ApolloClient({
     link: new WebSocketLink({

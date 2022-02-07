@@ -1,14 +1,12 @@
 import { Ad4mClient, LanguageMetaInput } from '@perspect3vism/ad4m';
 import type { Arguments, Argv } from 'yargs';
-import { buildAd4mClient, prettify } from './util';
+import { buildAd4mClient, CommonOptions, prettify } from './util';
 import ReadlineSync from 'readline-sync';
 
 export const command: string = 'languages [action]';
 export const desc: string = 'Languages related action';
 
-type Options = {
-  server?: string;
-  verbose?: boolean;
+type Options = CommonOptions & {
   address?: string;
   filter?: string;
   all?: boolean;
@@ -26,8 +24,6 @@ export const builder = (yargs: Argv) =>
       describe: 'Action that should be executed on the languages'
     })
     .options({
-      server: { type: 'string', default: 'ws://localhost:4000/graphql', alias: 's' },
-      verbose: { type: "boolean", default: false, alias: 'v' },
       address: { type: "string" },
       filter: { type: "string" },
       all: { type: "boolean" },
@@ -40,13 +36,10 @@ export const builder = (yargs: Argv) =>
 
 export const handler = async (argv: Arguments<Options>): Promise<void> => {
   const {
-    server, verbose, address, filter, all, settings, sourceLanguageHash,
+    server, address, filter, all, settings, sourceLanguageHash,
     templateData, languagePath, languageMeta, action
   } = argv;
 
-  if (verbose) {
-    console.info(`Attempting to connect to ${server}`);
-  }
   const ad4mClient = buildAd4mClient(server);
   switch (action) {
     case 'get': await get(ad4mClient, address, filter, all); break;

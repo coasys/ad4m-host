@@ -19,16 +19,25 @@ import {
   builder as languagesBuilder, handler as languagesHandler,
 } from './commands/client/languages';
 import {
+  command as expressionCommand, desc as expressionDesc,
+  builder as expressionBuilder, handler as expressionHandler,
+} from './commands/client/expression';
+import {
   command as initCommand, desc as initDesc,
   builder as initBuilder, handler as initHandler,
 } from './commands/init';
 
 yargs(hideBin(process.argv))
   .command(greetCommand, greetDesc, greetBuilder, greetHandler)
+  .command(initCommand, initDesc, initBuilder, initHandler)
   .command(serveCommand, serveDesc, serveBuilder, serveHandler)
   .command(agentCommand, agentDesc, agentBuilder, agentHandler)
   .command(languagesCommand, languagesDesc, languagesBuilder, languagesHandler)
-  .command(initCommand, initDesc, initBuilder, initHandler)
+  .command(expressionCommand, expressionDesc, expressionBuilder, expressionHandler)
+  .options({
+    server: { type: 'string', default: 'ws://localhost:4000/graphql', alias: 's' },
+    verbose: { type: "boolean", default: false, alias: 'v' },
+  })
   // Enable strict mode.
   .strict()
   // Useful aliases.
