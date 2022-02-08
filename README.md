@@ -1,6 +1,6 @@
-# Ad4m host service
+# Ad4m CLI
 
-## Run
+## Development
 
 Install dependencies,
 
@@ -8,42 +8,27 @@ Install dependencies,
 npm install
 ```
 
-Build holochain binaries,
+Prepare holochain binaries and bootstrap languages,
 
 ```shell
-npm run build-holochain
+npm run prepare
 ```
 
-Get bootstrap languages,
+Local development without installing any binary,
 
 ```shell
-npm run get-languages
+npm run dev  # start ad4m service
 ```
 
-Run ad4m service,
+## Release
+
+To build the binary package,
 
 ```shell
-npm run ad4m
+npm run release-macos
 ```
 
-Publish released langugages,
-* start ad4m service first
-* change scripts/publish-langs.js to your langugages
-* run publish with
-```shell
-AGENT_PASSWORD=your-password npm run publish-languages
-```
-
-## Build
-
-Build executable,
-
-```shell
-npm run build
-npm run package
-```
-
-To run the build executable, first init the required the binaries like holochain, lair-keystore and hc.
+To run the build executable, first initialize the required the binaries like holochain, lair-keystore and hc.
 
 ```shell
 ./dist/ad4m init

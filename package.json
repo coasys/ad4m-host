@@ -1,25 +1,28 @@
 {
   "name": "ad4m-host",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Self hosting ad4m service",
   "bin": {
     "ad4m": "build/cli.js"
   },
   "scripts": {
-    "build": "tsc",
+    "prepare": "npm run build-holochain && npm run get-languages",
     "build-holochain": "echo \"\n\n\n\nThis next stage will fail if Nix is not installed!! You can install here: https://nixos.wiki/wiki/Nix_Installation_Guide\" && sleep 5 && nix-shell --run ./scripts/copy-hc.sh",
     "get-languages": "node scripts/get-builtin-test-langs.js",
-    "publish-languages": "node scripts/publish-langs",
-    "ad4m": "node bin/ad4m",
-    "serve-launcher": "node bin/serve-launcher",
-    "package": "pkg . -o dist/ad4m -t node16-macos-x64 --public-packages \"*\" --no-bytecode",
+    "build": "tsc",
+    "package-macos": "pkg . -o dist/ad4m-macos-x64 -t node16-macos-x64 --public-packages \"*\" --no-bytecode",
+    "package-linux": "pkg . -o dist/ad4m-linux-x64 -t node16-linux-x64 --public-packages \"*\" --no-bytecode",
+    "package-windows": "pkg . -o dist/ad4m-windows-x64 -t node16-windows-x64 --public-packages \"*\" --no-bytecode",
+    "release-macos": "npm run build && npm run package-macos",
+    "dev": "npx ts-node src/cli.ts serve",
     "postinstall": "rm -rf node_modules/ipfs-core-types/src"
   },
   "pkg": {
     "scripts": "build/**/*",
     "assets": [
       "temp/**/*",
-      "node_modules/leveldown/**/*"
+      "node_modules/leveldown/**/*",
+      "node_modules/ts-invariant/**/*"
     ],
     "outputPath": "dist",
     "patches": {
@@ -28,25 +31,26 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kaichaosun/ad4m-host.git"
+    "url": "git+https://github.com/fluxsocial/ad4m-host.git"
   },
   "keywords": [
     "Holochain"
   ],
   "author": "Kaichao Sun",
-  "license": "ISC",
+  "license": "CAL-1.0",
   "bugs": {
-    "url": "https://github.com/kaichaosun/ad4m-host/issues"
+    "url": "https://github.com/fluxsocial/ad4m-host/issues"
   },
-  "homepage": "https://github.com/kaichaosun/ad4m-host#readme",
+  "homepage": "https://github.com/fluxsocial/ad4m-host#readme",
   "dependencies": {
     "@apollo/client": "^3.3.21",
-    "@perspect3vism/ad4m": "^0.1.22",
+    "@perspect3vism/ad4m": "^0.1.24",
     "ad4m-executor-test": "0.1.28",
     "appdata-path": "^1.0.0",
     "esm": "^3.2.25",
     "fs-extra": "^9.1.0",
     "node-wget-js": "^1.0.1",
+    "readline-sync": "^1.4.10",
     "unzipper": "^0.10.11",
     "ws": "^8.3.0",
     "yargs": "^17.3.1"
