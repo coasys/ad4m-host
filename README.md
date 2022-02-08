@@ -25,7 +25,7 @@ npm run dev  # start ad4m service
 To build the binary package,
 
 ```shell
-npm run release
+npm run release-macos
 ```
 
 To run the build executable, first initialize the required the binaries like holochain, lair-keystore and hc.
