@@ -23,7 +23,7 @@ export const builder = (yargs: Argv) =>
       choices: ['get', 'add', 'update', 'remove', 'queryLinks', 'addLink', 'updateLink', 'removeLink', 'queryProlog'],
     })
     .options({
-      url: { type: "string" },
+      uuid: { type: "string" },
       snapshot: { type: "boolean" },
       all: { type: "boolean" },
       query: { type: "string"},
@@ -81,7 +81,7 @@ async function get(ad4mClient: Ad4mClient, uuid: string, snapshot: boolean, all:
     return;
   }
 
-  console.info('Expression get action is missiong param <uuid> <snapshot> <all>');
+  console.info('Perspective get action is missiong param <uuid> <snapshot> <all>');
 }
 
 async function add(ad4mClient: Ad4mClient, name: string) {
@@ -91,7 +91,7 @@ async function add(ad4mClient: Ad4mClient, name: string) {
     return;
   }
 
-  console.info('Expression add action is missiong param <name>');
+  console.info('Perspective add action is missiong param <name>');
 }
 
 async function update(ad4mClient: Ad4mClient, uuid: string, name: string) {
@@ -101,7 +101,7 @@ async function update(ad4mClient: Ad4mClient, uuid: string, name: string) {
     return;
   }
 
-  console.info('Expression update action is missiong param <uuid> <name>');
+  console.info('Perspective update action is missiong param <uuid> <name>');
 }
 
 async function remove(ad4mClient: Ad4mClient, uuid: string) {
@@ -111,7 +111,7 @@ async function remove(ad4mClient: Ad4mClient, uuid: string) {
     return;
   }
 
-  console.info('Expression remove action is missiong param <uuid>');
+  console.info('Perspective remove action is missiong param <uuid>');
 }
 
 async function queryLinks(ad4mClient: Ad4mClient, uuid: string, query: string) {
@@ -121,7 +121,7 @@ async function queryLinks(ad4mClient: Ad4mClient, uuid: string, query: string) {
     return;
   }
 
-  console.info('Expression queryLinks action is missiong param <uuid> <query>');
+  console.info('Perspective queryLinks action is missiong param <uuid> <query>');
 }
 
 async function addLink(ad4mClient: Ad4mClient, uuid: string, link: string) {
@@ -131,7 +131,7 @@ async function addLink(ad4mClient: Ad4mClient, uuid: string, link: string) {
     return;
   }
 
-  console.info('Expression addLink action is missiong param <uuid> <link>');
+  console.info('Perspective addLink action is missiong param <uuid> <link>');
 }
 
 async function updateLink(ad4mClient: Ad4mClient, uuid: string, link: string, newLink: string) {
@@ -141,7 +141,7 @@ async function updateLink(ad4mClient: Ad4mClient, uuid: string, link: string, ne
     return;
   }
 
-  console.info('Expression updateLink action is missiong param <uuid> <link> <newLink>');
+  console.info('Perspective updateLink action is missiong param <uuid> <link> <newLink>');
 }
 
 async function removeLink(ad4mClient: Ad4mClient, uuid: string, link: string) {
@@ -151,7 +151,7 @@ async function removeLink(ad4mClient: Ad4mClient, uuid: string, link: string) {
     return;
   }
 
-  console.info('Expression removeLink action is missiong param <uuid> <link>');
+  console.info('Perspective removeLink action is missiong param <uuid> <link>');
 }
 
 async function queryProlog(ad4mClient: Ad4mClient, uuid: string, query: string) {
@@ -161,5 +161,5 @@ async function queryProlog(ad4mClient: Ad4mClient, uuid: string, query: string) 
     return;
   }
 
-  console.info('Expression queryProlog action is missiong param <uuid> <query>');
+  console.info('Perspective queryProlog action is missiong param <uuid> <query>');
 }
