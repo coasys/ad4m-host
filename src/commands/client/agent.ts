@@ -12,7 +12,8 @@ export const builder = (yargs: Argv) =>
     .positional('action', {
       type: 'string',
       describe: 'Action that should be executed on the agent',
-      default: 'status'
+      choices: ['generate', 'lock', 'unlock', 'status', 'me'],
+      default: 'status',
     });
 
 export const handler = async (argv: Arguments<Options>): Promise<void> => {

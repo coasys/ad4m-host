@@ -31,6 +31,10 @@ import {
   builder as neighbourhoodBuilder, handler as neighbourhoodHandler,
 } from './commands/client/neighbourhood';
 import {
+  command as runtimeCommand, desc as runtimeDesc,
+  builder as runtimeBuilder, handler as runtimeHandler,
+} from './commands/client/runtime';
+import {
   command as initCommand, desc as initDesc,
   builder as initBuilder, handler as initHandler,
 } from './commands/init';
@@ -44,6 +48,7 @@ yargs(hideBin(process.argv))
   .command(expressionCommand, expressionDesc, expressionBuilder, expressionHandler)
   .command(perspectiveCommand, perspectiveDesc, perspectiveBuilder, perspectiveHandler)
   .command(neighbourhoodCommand, neighbourhoodDesc, neighbourhoodBuilder, neighbourhoodHandler)
+  .command(runtimeCommand, runtimeDesc, runtimeBuilder, runtimeHandler)
   .options({
     server: { type: 'string', default: 'ws://localhost:4000/graphql', alias: 's' },
     verbose: { type: "boolean", default: false, alias: 'v' },
