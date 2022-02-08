@@ -1,0 +1,56 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  release:
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [macos-latest, ubuntu-18.04, windows-latest]
+        # node-version: [14.x]
+    env:
+      MACOSX_DEPLOYMENT_TARGET: 10.13
+
+    runs-on: ${{ matrix.platform }}
+    
+    steps:
+    - name: Fetch source code
+      uses: actions/checkout@v2
+    - name: Setup node
+      uses: actions/setup-node@v1
+      with:
+        node-version: 16
+    - name: Use Nix
+      uses: cachix/install-nix-action@v12
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Configure Nix substituters
+      run: |
+        set -xe
+        mkdir -p ~/.config/nix/
+        cp ./.github/nix.conf ~/.config/nix/
+    - uses: cachix/cachix-action@v10
+      with:
+        name: perspect3vism
+        # authToken: '${{ secrets.CACHIX_HOLOCHAIN_CI }}'
+    - name: Prepare Nix environment
+      run: nix-shell hc-dna/default.nix --command "echo Completed"
+    - name: Release languages
+      run: |
+        ./release.sh
+        cp ./release/shortform/bundle.js ./shortform-expression.js
+        cp ./release/group/bundle.js ./group-expression.js
+        cp ./release/sdp/bundle.js ./sdp-expression.js
+        cp ./release/icecandidate/bundle.js ./icecandidate-expression.js
+    - name: Upload released files
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: "shortform-expression.js, group-expression.js, sdp-expression.js, icecandidate-expression.js"
+        token: ${{ secrets.GITHUB_TOKEN }}
+        allowUpdates: true  

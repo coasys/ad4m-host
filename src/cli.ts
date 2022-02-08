@@ -3,10 +3,6 @@
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import {
-  command as greetCommand, desc as greetDesc,
-  builder as greetBuilder, handler as greetHandler,
-} from './commands/greet';
-import {
   command as serveCommand, desc as serveDesc,
   builder as serveBuilder, handler as serveHandler,
 } from './commands/serve';
@@ -40,7 +36,6 @@ import {
 } from './commands/init';
 
 yargs(hideBin(process.argv))
-  .command(greetCommand, greetDesc, greetBuilder, greetHandler)
   .command(initCommand, initDesc, initBuilder, initHandler)
   .command(serveCommand, serveDesc, serveBuilder, serveHandler)
   .command(agentCommand, agentDesc, agentBuilder, agentHandler)
