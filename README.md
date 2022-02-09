@@ -11,7 +11,7 @@ npm install
 Prepare holochain binaries and bootstrap languages,
 
 ```shell
-npm run prepare
+npm run prepare-dev
 ```
 
 Local development without installing any binary,
