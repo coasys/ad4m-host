@@ -68,6 +68,6 @@ jobs:
       if: matrix.platform == 'windows-latest'
       uses: ncipollo/release-action@v1
       with:
-        artifacts: "dist/ad4m-windows-x64"
+        artifacts: "dist/ad4m-windows-x64.exe"
         token: ${{ secrets.GITHUB_TOKEN }}
         allowUpdates: true
