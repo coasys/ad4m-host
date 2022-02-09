@@ -6,9 +6,9 @@ const path = require("path");
 const languages = {
   "agent-expression-store": {
     targetDnaName: "agent-store",
-    dna: "https://github.com/perspect3vism/agent-language/releases/download/0.0.7/agent-store.dna",
+    dna: "https://github.com/perspect3vism/agent-language/releases/download/0.0.8/agent-store.dna",
     bundle:
-      "https://github.com/perspect3vism/agent-language/releases/download/0.0.7/bundle.js",
+      "https://github.com/perspect3vism/agent-language/releases/download/0.0.8/bundle.js",
   },
   languages: {
       targetDnaName: "languages",
@@ -22,12 +22,14 @@ const languages = {
     bundle: "https://github.com/perspect3vism/lang-note-ipfs/releases/download/0.0.1/bundle.js",
   },
   "direct-message-language": {
-    bundle: "https://github.com/perspect3vism/direct-message-language/releases/download/0.0.2/bundle.js"
+    bundle: "https://github.com/perspect3vism/direct-message-language/releases/download/0.0.3/bundle.js"
   }
 };
 
 async function main() {
+  console.log("List of languages to download:", languages)
   for (const lang in languages) {
+    console.log("Downloading:", lang)
     const dir = path.join(__dirname, "../temp/languages", lang)
     await fs.ensureDir(dir + "/build");
 
@@ -35,14 +37,14 @@ async function main() {
     if (languages[lang].bundle) {
       let url = languages[lang].bundle;
       let dest = dir + "/build/bundle.js";
-      wget({ url, dest });
+      await wget({ url, dest });
     }
 
     // dna
     if (languages[lang].dna) {
       url = languages[lang].dna;
       dest = dir + `/${languages[lang].targetDnaName}.dna`;
-      wget({ url, dest });
+      await wget({ url, dest });
     }
 
     if (languages[lang].zipped) {

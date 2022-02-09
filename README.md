@@ -1,4 +1,4 @@
-# Ad4m CLI
+# Ad4m Host
 
 This is command-line program to host ad4m service and request to the service with build-in commands.
 
@@ -7,9 +7,8 @@ This is command-line program to host ad4m service and request to the service wit
 Dowload the program with this command,
 
 ```shell
-curl https://getad4mhost.com
-
-move ad4m-macos ad4m
+wget -O ad4m https://github.com/fluxsocial/ad4m-host/releases/download/v0.0.1/ad4m-macos-x64
+chmod +x ./ad4m
 ```
 
 Get help inforamtion for available commands,
@@ -20,7 +19,7 @@ Get help inforamtion for available commands,
 ./ad4m agent -h
 ```
 
-Initialize the dependencies by coping the holochain binaries,
+Initialize the dependencies by coping the holochain binaries (**Required**),
 
 ```shell
 ./ad4m init
@@ -37,11 +36,16 @@ When running the AD4M executor for the very first time, we need to generate an a
 
 ```shell
 ./ad4m agent generate
-./ad4m agent unlock
-./ad4m agent status
 ```
 
-create an expression,
+After restart the ad4m service, it's usually necessary to check agent status and unlock the agent with passphrase,
+
+```shell
+./ad4m agent status
+./ad4m agent unlock
+```
+
+Create an expression,
 
 ```shell
 ```
