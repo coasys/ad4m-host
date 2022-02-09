@@ -4,10 +4,10 @@ This is command-line program to host ad4m service and request to the service wit
 
 ## Usage
 
-Dowload the program with this command,
+Dowload the latest program on the [Release page](https://github.com/fluxsocial/ad4m-host/releases), here take Mac os as example,
 
 ```shell
-wget -O ad4m https://github.com/fluxsocial/ad4m-host/releases/download/v0.0.1/ad4m-macos-x64
+wget -O ad4m https://github.com/fluxsocial/ad4m-host/releases/download/v0.0.2/ad4m-macos-x64
 chmod +x ./ad4m
 ```
 
@@ -45,10 +45,47 @@ After restart the ad4m service, it's usually necessary to check agent status and
 ./ad4m agent unlock
 ```
 
-Create an expression,
+**Create an expression,**
 
 ```shell
+# show all the downloaded languages
+./ad4m languages get --all
+
+# install the note-ipfs language with its address
+./ad4m languages get --address QmYVsrMpiFmV9S7bTWNAkUzSqjRJskQ8g4TWKKwKrHAPqL
+
+# if got "not a trustedAgent error", try add a trusted agent with the language creator's did
+./ad4m runtime addTrustedAgent --did "did:key:zQ3shf......P18LM3"
+
+# create an expression with note-ipfs language, return the url of the expression
+./ad4m expression create --content "This is a test note" --address QmYVsrMpiFmV9S7bTWNAkUzSqjRJskQ8g4TWKKwKrHAPqL
+
+# get the expression with its url
+./ad4m expression get --url "QmYVsrMpiFmV9S7bTWNAkUzSqjRJskQ8g4TWKKwKrHAPqL://QmSsCCtXMDAZXMpyiNLzwjGEU4hLmhG7fphidhEEodQ4Wy"
 ```
+
+**Publish a language,**
+
+```shell
+# publish a template langauge by replacing the path and meta params. 
+# you can also omit the path and meta params, and input them interactively.
+# it should give the address of the language.
+./ad4m languages publish --path "/Users/kaichaosun/github/holo/ad4m-languages/release/shortform/bundle.js" --meta '{"name":"shortform-expression","description":"Shortform expression for flux application","possibleTemplateParams":["uid","name"],"sourceCodeLink":"https://github.com/juntofoundation/ad4m-languages"}'
+
+# check the metadata of the template language
+./ad4m languages meta --address QmWN1LBR3Zzx3yE7mncf93BPna8RbwtkSrYxTETktfpUyJ
+
+# publish a language by appling template data to a template language
+# it should give the address of the templated language
+./ad4m languages applyTemplateAndPublish --address QmWN1LBR3Zzx3yE7mncf93BPna8RbwtkSrYxTETktfpUyJ --templateData '{"uid":"123","name":"test-shortform-expression"}'
+
+# check the metadata of the templated language
+./ad4m languages meta --address QmX2e2MaN9ayWaoA4MRhjjVw72RqgxUh7v7SWNbU5Kebpq
+```
+
+**Create perspective, neighbourhood**
+
+TODO
 
 ## Development
 
@@ -70,24 +107,10 @@ Local development without installing any binary,
 npm run dev  # start ad4m service
 ```
 
-## Release
-
 To build the binary package,
 
 ```shell
 npm run release-macos
-```
-
-To run the build executable, first initialize the required the binaries like holochain, lair-keystore and hc.
-
-```shell
-./dist/ad4m init
-```
-
-Then start the ad4m service, if pass the optional parameter `connectHolochain`, you need to provide the running holochain admian and app interface port.
-
-```shell
-./dist/ad4m serve
 ```
 
 ## Operate with GraphQL
