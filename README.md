@@ -55,7 +55,7 @@ After restart the ad4m service, it's usually necessary to check agent status and
 ./ad4m languages get --address QmYVsrMpiFmV9S7bTWNAkUzSqjRJskQ8g4TWKKwKrHAPqL
 
 # if got "not a trustedAgent error", try add a trusted agent with the language creator's did
-./ad4m runtime addTrustedAgent --did "did:key:zQ3shf......P18LM3"
+./ad4m runtime addTrustedAgent --did "did:key:zQ3shfhvaHzE81hZqLorVNDmq971EpGPXq3nhyLF1JRP18LM3"
 
 # create an expression with note-ipfs language, return the url of the expression
 ./ad4m expression create --content "This is a test note" --address QmYVsrMpiFmV9S7bTWNAkUzSqjRJskQ8g4TWKKwKrHAPqL
