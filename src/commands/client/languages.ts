@@ -20,7 +20,8 @@ export const builder = (yargs: Argv) =>
   yargs
     .positional('action', {
       type: 'string',
-      describe: 'Action that should be executed on the languages'
+      describe: 'Action that should be executed on the languages',
+      choices: ['get', 'writeSettings', 'applyTemplateAndPublish', 'publish', 'meta', 'source'],
     })
     .options({
       address: { type: "string", describe: 'Address of the language' },

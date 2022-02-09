@@ -1,5 +1,51 @@
 # Ad4m CLI
 
+This is command-line program to host ad4m service and request to the service with build-in commands.
+
+## Usage
+
+Dowload the program with this command,
+
+```shell
+curl https://getad4mhost.com
+
+move ad4m-macos ad4m
+```
+
+Get help inforamtion for available commands,
+
+```shell
+./ad4m -h
+./ad4m serve -h
+./ad4m agent -h
+```
+
+Initialize the dependencies by coping the holochain binaries,
+
+```shell
+./ad4m init
+```
+
+Run ad4m service with or without connecting to an existing running holochain process,
+
+```shell
+./ad4m serve --connectHolochain  # connect with existing running holochain process
+./ad4m serve # start its own holochain process
+```
+
+When running the AD4M executor for the very first time, we need to generate an agent (i.e. DID and keys) with:
+
+```shell
+./ad4m agent generate
+./ad4m agent unlock
+./ad4m agent status
+```
+
+create an expression,
+
+```shell
+```
+
 ## Development
 
 Install dependencies,

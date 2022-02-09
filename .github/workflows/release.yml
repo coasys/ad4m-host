@@ -51,10 +51,10 @@ jobs:
         allowUpdates: true
     
     - name: Build the binary (linux-latest)
-      if: matrix.platform == 'linux-latest'
+      if: matrix.platform == 'ubuntu-latest'
       run: npm run build && npm run package-linux
     - name: Upload the binary (linux-latest)
-      if: matrix.platform == 'linux-latest'
+      if: matrix.platform == 'ubuntu-latest'
       uses: ncipollo/release-action@v1
       with:
         artifacts: "dist/ad4m-linux-x64"
