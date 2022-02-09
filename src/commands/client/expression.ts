@@ -9,7 +9,7 @@ type Options = CommonOptions & {
   url?: string;
   raw?: boolean;
   content?: string;
-  languageAddress?: string;
+  address?: string;
 };
 
 export const builder = (yargs: Argv) =>
@@ -20,19 +20,19 @@ export const builder = (yargs: Argv) =>
       choices: ['get', 'create'],
     })
     .options({
-      url: { type: "string" },
-      raw: { type: "boolean" },
-      content: { type: "string" },
-      languageAddress: { type: "string" },
+      url: { type: "string", describe: 'url of the expression' },
+      raw: { type: "boolean", describe: 'Flag to request raw data of the expression' },
+      content: { type: "string", describe: 'Content when create the expression'},
+      address: { type: "string", describe: 'Address of language used to create the expression' },
     });
 
 export const handler = async (argv: Arguments<Options>): Promise<void> => {
-  const { server, url, raw, content, languageAddress, action } = argv;
+  const { server, url, raw, content, address, action } = argv;
 
   const ad4mClient = buildAd4mClient(server);
   switch (action) {
     case 'get': await get(ad4mClient, url, raw); break;
-    case 'create': await create(ad4mClient, content, languageAddress); break;
+    case 'create': await create(ad4mClient, content, address); break;
 
     default:
       console.info(`Action "${argv.action}" is not defined on expression.`)
@@ -58,13 +58,13 @@ async function get(ad4mClient: Ad4mClient, url: string, raw: boolean) {
   console.info('Expression get action is missiong param <url> <raw>');
 }
 
-async function create(ad4mClient: Ad4mClient, content: string, languageAddress: string) {
-  if (content && languageAddress) {
-    const expression = await ad4mClient.expression.create(content, languageAddress);
+async function create(ad4mClient: Ad4mClient, content: string, address: string) {
+  if (content && address) {
+    const expression = await ad4mClient.expression.create(content, address);
     prettify(expression)
     return;
   }
 
-  console.info('Expression create action is missiong param <content> <languageAddress>');
+  console.info('Expression create action is missiong param <content> <address>');
 }
 

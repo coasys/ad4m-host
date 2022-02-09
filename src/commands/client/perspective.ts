@@ -23,13 +23,13 @@ export const builder = (yargs: Argv) =>
       choices: ['get', 'add', 'update', 'remove', 'queryLinks', 'addLink', 'updateLink', 'removeLink', 'queryProlog'],
     })
     .options({
-      uuid: { type: "string" },
-      snapshot: { type: "boolean" },
-      all: { type: "boolean" },
-      query: { type: "string"},
-      name: { type: "string"},
-      link: { type: "string"},
-      newLink: { type: "string"},
+      uuid: { type: "string", describe: 'Identifier of the perspective' },
+      snapshot: { type: "boolean", describe: 'Flag to request the snapshot of the perspective' },
+      all: { type: "boolean", describe: 'Flag to request all the perspectives' },
+      query: { type: "string", describe: 'Conditions used when query links or prolog' },
+      name: { type: "string", describe: 'Name of the perspective when adding a new one' },
+      link: { type: "string", describe: 'Add, update or remove a link in the perspective' },
+      newLink: { type: "string", describe: 'Use this new link to update an existing link' },
     });
 
 export const handler = async (argv: Arguments<Options>): Promise<void> => {

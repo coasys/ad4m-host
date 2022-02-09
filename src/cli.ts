@@ -45,7 +45,12 @@ yargs(hideBin(process.argv))
   .command(neighbourhoodCommand, neighbourhoodDesc, neighbourhoodBuilder, neighbourhoodHandler)
   .command(runtimeCommand, runtimeDesc, runtimeBuilder, runtimeHandler)
   .options({
-    server: { type: 'string', default: 'ws://localhost:4000/graphql', alias: 's' },
+    server: {
+      type: 'string',
+      describe: 'Connect to this endpoint when request to ad4m service',
+      default: 'ws://localhost:4000/graphql',
+      alias: 's',
+    },
     verbose: { type: "boolean", default: false, alias: 'v' },
   })
   // Enable strict mode.

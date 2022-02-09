@@ -11,10 +11,9 @@ type Options = CommonOptions & {
   filter?: string;
   all?: boolean;
   settings?: string;
-  sourceLanguageHash?: string;
   templateData?: string;
-  languagePath?: string;
-  languageMeta?: string;
+  path?: string;
+  meta?: string;
 };
 
 export const builder = (yargs: Argv) =>
@@ -24,29 +23,28 @@ export const builder = (yargs: Argv) =>
       describe: 'Action that should be executed on the languages'
     })
     .options({
-      address: { type: "string" },
-      filter: { type: "string" },
-      all: { type: "boolean" },
-      settings: { type: "string" },
-      sourceLanguageHash: { type: "string" },
-      templateData: { type: "string" },
-      languagePath: { type: "string" },
-      languageMeta: { type: "string" }
+      address: { type: "string", describe: 'Address of the language' },
+      filter: { type: "string", describe: 'Filter the languages when query' },
+      all: { type: "boolean", describe: 'Flag to request all the languages' },
+      settings: { type: "string", describe: 'Settings of the language to write' },
+      templateData: { type: "string", describe: 'Apply template data when publish templated language' },
+      path: { type: "string", describe: 'Refer to the language under this path' },
+      meta: { type: "string", describe: 'metadata of the language' }
     });
 
 export const handler = async (argv: Arguments<Options>): Promise<void> => {
   const {
-    server, address, filter, all, settings, sourceLanguageHash,
-    templateData, languagePath, languageMeta, action
+    server, address, filter, all, settings,
+    templateData, path, meta, action
   } = argv;
 
   const ad4mClient = buildAd4mClient(server);
   switch (action) {
     case 'get': await get(ad4mClient, address, filter, all); break;
     case 'writeSettings': await writeSettings(ad4mClient, address, settings);  break;
-    case 'applyTemplateAndPublish': await applyTemplateAndPublish(ad4mClient, sourceLanguageHash, templateData); break;
-    case 'publish': await publish(ad4mClient, languagePath, languageMeta); break
-    case 'meta': await meta(ad4mClient, address); break;
+    case 'applyTemplateAndPublish': await applyTemplateAndPublish(ad4mClient, address, templateData); break;
+    case 'publish': await publish(ad4mClient, path, meta); break
+    case 'meta': await getMeta(ad4mClient, address); break;
     case 'source': await source(ad4mClient, address); break;
 
     default:
@@ -87,21 +85,21 @@ async function writeSettings(ad4mClient: Ad4mClient, address?: string, settings?
   prettify(result);
 }
 
-async function applyTemplateAndPublish(ad4mClient: Ad4mClient, sourceLanguageHash?: string, templateData?: string) {
-  if (sourceLanguageHash == undefined || templateData == undefined) {
-    console.info('Language applyTemplateAndPublish action is missing params <sourceLanguageHash> and <templateData>');
+async function applyTemplateAndPublish(ad4mClient: Ad4mClient, address?: string, templateData?: string) {
+  if (address == undefined || templateData == undefined) {
+    console.info('Language applyTemplateAndPublish action is missing params <address> and <templateData>');
     return;
   }
-  const result = await ad4mClient.languages.applyTemplateAndPublish(sourceLanguageHash, templateData);
+  const result = await ad4mClient.languages.applyTemplateAndPublish(address, templateData);
   prettify(result);
 }
 
-async function publish(ad4mClient: Ad4mClient, languagePath?: string, languageMeta?: string) {
+async function publish(ad4mClient: Ad4mClient, path?: string, meta?: string) {
   let languageMetaInput: LanguageMetaInput;
-  if (languagePath == undefined) {
-    languagePath = ReadlineSync.question("Path of the bundled file: ");
+  if (path == undefined) {
+    path = ReadlineSync.question("Path of the bundled file: ");
   }
-  if (languageMeta == undefined) {
+  if (meta == undefined) {
     const name = ReadlineSync.question("Name (must match name in source code): ");
     const description = ReadlineSync.question("Description: ");
     const templateParams = ReadlineSync.question("In case of a templateable Language, list of template parameters (comma separated): ");
@@ -118,17 +116,17 @@ async function publish(ad4mClient: Ad4mClient, languagePath?: string, languageMe
       languageMetaInput.possibleTemplateParams = params
     }
   } else {
-    let languageMetaObj = JSON.parse(languageMeta);
+    let languageMetaObj = JSON.parse(meta);
     languageMetaInput = new LanguageMetaInput(languageMetaObj.name, languageMetaObj.description);
     languageMetaInput.sourceCodeLink = languageMetaObj.sourceCodeLink.trim();
     languageMetaInput.possibleTemplateParams = languageMetaObj.possibleTemplateParams;
   }
 
-  const result = await ad4mClient.languages.publish(languagePath, languageMetaInput);
+  const result = await ad4mClient.languages.publish(path, languageMetaInput);
   prettify(result);
 }
 
-async function meta(ad4mClient: Ad4mClient, address?: string) {
+async function getMeta(ad4mClient: Ad4mClient, address?: string) {
   if (address) {
     const result = await ad4mClient.languages.meta(address);
     prettify(result);

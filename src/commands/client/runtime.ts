@@ -7,7 +7,6 @@ export const command: string = 'runtime [action]';
 export const desc: string = 'Runtime related action';
 
 type Options = CommonOptions & {
-  agent?: string;
   address?: string;
   did?: string;
   raw?: boolean;
@@ -27,21 +26,20 @@ export const builder = (yargs: Argv) =>
       ],
     })
     .options({
-      agent: { type: "string" },
-      address: { type: "string" },
-      did: { type: "string" },
-      raw: { type: "boolean" },
-      path: { type: "string" },
+      address: { type: 'string', describe: 'Address of the known link language' },
+      did: { type: 'string', describe: 'The did of one agent' },
+      raw: { type: 'boolean', describe: 'Flag to request raw agent infos' },
+      path: { type: 'string', describe: 'Resolve agent infos under this path' },
     });
 
 export const handler = async (argv: Arguments<Options>): Promise<void> => {
-  const { server, agent, address, did, raw, path, action } = argv;
+  const { server, address, did, raw, path, action } = argv;
 
   const ad4mClient = buildAd4mClient(server);
   switch (action) {
     case 'getTrustedAgents': await getTrustedAgents(ad4mClient); break;
-    case 'addTrustedAgent': await addTrustedAgent(ad4mClient, agent); break;
-    case 'deleteTrustedAgent': await deleteTrustedAgent(ad4mClient, agent); break;
+    case 'addTrustedAgent': await addTrustedAgent(ad4mClient, did); break;
+    case 'deleteTrustedAgent': await deleteTrustedAgent(ad4mClient, did); break;
 
     case 'knownLinkLanguageTemplates': await knownLinkLanguageTemplates(ad4mClient); break;
     case 'addKnownLinkLanguageTemplate': await addKnownLinkLanguageTemplate(ad4mClient, address); break;
@@ -67,24 +65,24 @@ async function getTrustedAgents(ad4mClient: Ad4mClient) {
   prettify(result);
 }
 
-async function addTrustedAgent(ad4mClient: Ad4mClient, agent: string) {
-  if (agent) {
-    const result = await ad4mClient.runtime.addTrustedAgents([agent]);
+async function addTrustedAgent(ad4mClient: Ad4mClient, did: string) {
+  if (did) {
+    const result = await ad4mClient.runtime.addTrustedAgents([did]);
     prettify(result);
     return;
   }
 
-  console.info('Runtime addTrustedAgent action is missiong param <agent>');
+  console.info('Runtime addTrustedAgent action is missiong param <did>');
 }
 
-async function deleteTrustedAgent(ad4mClient: Ad4mClient, agent: string) {
-  if (agent) {
-    const result = await ad4mClient.runtime.deleteTrustedAgents([agent]);
+async function deleteTrustedAgent(ad4mClient: Ad4mClient, did: string) {
+  if (did) {
+    const result = await ad4mClient.runtime.deleteTrustedAgents([did]);
     prettify(result);
     return;
   }
 
-  console.info('Runtime deleteTrustedAgent action is missiong param <agent>');
+  console.info('Runtime deleteTrustedAgent action is missiong param <did>');
 }
 
 async function knownLinkLanguageTemplates(ad4mClient: Ad4mClient) {

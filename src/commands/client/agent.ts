@@ -3,7 +3,7 @@ import type { Arguments, Argv } from 'yargs';
 import { buildAd4mClient, readPassphrase, prettify, CommonOptions } from './util';
 
 export const command: string = 'agent [action]';
-export const desc: string = 'Agent-related action';
+export const desc: string = 'Agent related action';
 
 type Options = CommonOptions;
 
@@ -23,11 +23,11 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
   }
   const ad4mClient = buildAd4mClient(server);
   switch (action) {
-    case 'generate': await generate(ad4mClient, verbose); break;
-    case 'lock': await lock(ad4mClient, verbose); break;
-    case 'unlock': await unlock(ad4mClient, verbose); break;
-    case 'status': await status(ad4mClient, verbose); break;
-    case 'me': await me(ad4mClient, verbose); break;
+    case 'generate': await generate(ad4mClient); break;
+    case 'lock': await lock(ad4mClient); break;
+    case 'unlock': await unlock(ad4mClient); break;
+    case 'status': await status(ad4mClient); break;
+    case 'me': await me(ad4mClient); break;
 
     default:
       console.info(`Action "${argv.action}" is not defined on agent.`)
@@ -37,49 +37,30 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
   process.exit();
 };
 
-async function generate(ad4mClient: Ad4mClient, verbose: boolean) {
-  if (verbose) {
-    console.info(`Generating agent`);
-  }
-
+async function generate(ad4mClient: Ad4mClient) {
   const passphrase = readPassphrase();
   const agentStatus = await ad4mClient.agent.generate(passphrase);
   prettify(agentStatus);
 }
 
-async function lock(ad4mClient: Ad4mClient, verbose: boolean) {
-  if (verbose) {
-    console.info(`Locking agent`);
-  }
+async function lock(ad4mClient: Ad4mClient) {
   // Passphrase not needed
   const agentStatus = await ad4mClient.agent.lock("");
   prettify(agentStatus);
 }
 
-async function unlock(ad4mClient: Ad4mClient, verbose: boolean) {
-  if (verbose) {
-    console.info(`Unlocking agent`);
-  }
-
+async function unlock(ad4mClient: Ad4mClient) {
   const passphrase = readPassphrase();
   const agentStatus = await ad4mClient.agent.unlock(passphrase);
   prettify(agentStatus);
 }
 
-async function status(ad4mClient: Ad4mClient, verbose: boolean) {
-  if (verbose) {
-    console.info(`Querying agent status`);
-  }
-
+async function status(ad4mClient: Ad4mClient) {
   const agentStatus = await ad4mClient.agent.status();
   prettify(agentStatus);
 }
 
-async function me(ad4mClient: Ad4mClient, verbose: boolean) {
-  if (verbose) {
-    console.info(`Querying agent info`);
-  }
-
+async function me(ad4mClient: Ad4mClient) {
   const agent = await ad4mClient.agent.me();
   prettify(agent);
 }
