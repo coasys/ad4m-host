@@ -3,9 +3,7 @@ name: Release
 on:
   push:
     tags:
-      - '*'
-  pull_request: # TODO remove
-    branches: [ master ]
+      - 'v*'
 
 jobs:
   publish-binary:
@@ -24,19 +22,22 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: Use Nix
-      uses: cachix/install-nix-action@v13
+    - name: Install Rust stable
+      uses: actions-rs/toolchain@v1
       with:
-        nix_path: nixpkgs=channel:nixos-unstable
-    - uses: cachix/cachix-action@v10
-      with:
-        name: perspect3vism
-        # authToken: '${{ secrets.CACHIX_HOLOCHAIN_CI }}'
-    - name: Prepare Nix environment
-      run: nix-shell --command "echo Completed"
+        override: true
+        toolchain: 1.55
     
     - name: Install dependencies
-      run: npm install && npm run prepare
+      run: npm install && npm run get-languages
+    - name: Build Holochain 
+      env:
+        SQLCIPHER_STATIC: 1
+      run: |
+        cargo install lair_keystore --git https://github.com/guillemcordoba/lair --rev 8c0a3683d93540301af53688ea431c7cc0beb438
+        cargo install --locked holochain --git https://github.com/holochain/holochain.git --tag holochain-0.0.125
+        cargo install holochain_cli --version 0.0.26
+        ./scripts/copy-hc.sh
     
     - name: Build the binary (macos-latest)
       if: matrix.platform == 'macos-latest'
@@ -50,10 +51,10 @@ jobs:
         allowUpdates: true
     
     - name: Build the binary (linux-latest)
-      if: matrix.platform == 'linux-latest'
+      if: matrix.platform == 'ubuntu-latest'
       run: npm run build && npm run package-linux
     - name: Upload the binary (linux-latest)
-      if: matrix.platform == 'linux-latest'
+      if: matrix.platform == 'ubuntu-latest'
       uses: ncipollo/release-action@v1
       with:
         artifacts: "dist/ad4m-linux-x64"

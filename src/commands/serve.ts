@@ -18,10 +18,10 @@ export const desc: string = 'Serve ad4m service at given port';
 export const builder = (yargs: Argv) =>
   yargs
     .options({
-      graphqlPort: { type: 'number' },
-      hcAdminPort: { type: 'number' },
-      hcAppPort: { type: 'number' },
-      connectHolochain: { type: "boolean" }
+      graphqlPort: { type: 'number', describe: 'Use this port to run ad4m GraphQL service', default: 4000 },
+      hcAdminPort: { type: 'number', describe: 'Admin port of holochain conductor' },
+      hcAppPort: { type: 'number', describe: 'Port used by hApp' },
+      connectHolochain: { type: "boolean", describe: 'Flag to connect existing running holochain process'}
     });
 
 export const handler = async (argv: Arguments<Options>): Promise<void> => {

@@ -6,13 +6,13 @@
     "ad4m": "build/cli.js"
   },
   "scripts": {
-    "prepare": "npm run build-holochain && npm run get-languages",
+    "prepare-dev": "npm run build-holochain && npm run get-languages",
     "build-holochain": "echo \"\n\n\n\nThis next stage will fail if Nix is not installed!! You can install here: https://nixos.wiki/wiki/Nix_Installation_Guide\" && sleep 5 && nix-shell --run ./scripts/copy-hc.sh",
     "get-languages": "node scripts/get-builtin-test-langs.js",
     "build": "tsc",
-    "package-macos": "pkg . -o dist/ad4m-macos-x64 -t node16-macos-x64 --public-packages \"*\" --no-bytecode",
-    "package-linux": "pkg . -o dist/ad4m-linux-x64 -t node16-linux-x64 --public-packages \"*\" --no-bytecode",
-    "package-windows": "pkg . -o dist/ad4m-windows-x64 -t node16-windows-x64 --public-packages \"*\" --no-bytecode",
+    "package-macos": "pkg . -o dist/ad4m-macos-x64 -t node16-macos-x64 --public-packages \"*\"",
+    "package-linux": "pkg . -o dist/ad4m-linux-x64 -t node16-linux-x64 --public-packages \"*\"",
+    "package-windows": "pkg . -o dist/ad4m-windows-x64 -t node16-windows-x64 --public-packages \"*\"",
     "release-macos": "npm run build && npm run package-macos",
     "dev": "npx ts-node src/cli.ts serve",
     "postinstall": "rm -rf node_modules/ipfs-core-types/src"

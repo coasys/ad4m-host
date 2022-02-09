@@ -7,7 +7,7 @@ export const desc: string = 'Neighbourhood related action';
 
 type Options = CommonOptions & {
   uuid?: string;
-  linkLanguage?: string;
+  address?: string;
   meta?: string;
   url?: string;
 };
@@ -20,18 +20,18 @@ export const builder = (yargs: Argv) =>
       choices: ['publishFromPerspective', 'joinFromUrl'],
     })
     .options({
-      uuid: { type: "string" },
-      linkLanguage: { type: "string" },
-      meta: { type: "string" },
-      url: { type: "string" },
+      uuid: { type: "string", describe: 'Identifier of the perspective' },
+      address: { type: "string", describe: 'Address of the link language used for the neighbourhood' },
+      meta: { type: "string", describe: 'Metadata of the neighbourhood' },
+      url: { type: "string", describe: 'URL of the neighbourhood'},
     });
 
 export const handler = async (argv: Arguments<Options>): Promise<void> => {
-  const { server, uuid, linkLanguage, meta, url, action } = argv;
+  const { server, uuid, address, meta, url, action } = argv;
 
   const ad4mClient = buildAd4mClient(server);
   switch (action) {
-    case 'publishFromPerspective': await publishFromPerspective(ad4mClient, uuid, linkLanguage, meta); break;
+    case 'publishFromPerspective': await publishFromPerspective(ad4mClient, uuid, address, meta); break;
     case 'joinFromUrl': await joinFromUrl(ad4mClient, url); break;
 
     default:
@@ -42,14 +42,14 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
   process.exit();
 };
 
-async function publishFromPerspective(ad4mClient: Ad4mClient, uuid: string, linkLanguage: string, meta: string) {
-  if (uuid && linkLanguage && meta) {
-    const result = await ad4mClient.neighbourhood.publishFromPerspective(uuid, linkLanguage, JSON.parse(meta));
+async function publishFromPerspective(ad4mClient: Ad4mClient, uuid: string, address: string, meta: string) {
+  if (uuid && address && meta) {
+    const result = await ad4mClient.neighbourhood.publishFromPerspective(uuid, address, JSON.parse(meta));
     prettify(result)
     return;
   }
 
-  console.info('Neighbourhood publishFromPerspective action is missiong param <uuid> <linkLanguage> <meta>');
+  console.info('Neighbourhood publishFromPerspective action is missiong param <uuid> <address> <meta>');
 }
 
 async function joinFromUrl(ad4mClient: Ad4mClient, url: string) {
