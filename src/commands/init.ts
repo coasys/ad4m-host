@@ -10,7 +10,7 @@ import utils from 'util';
 
 const copyFile = utils.promisify(fs.copyFile);
 const chmod = utils.promisify(fs.chmod);
-export const binaryPath = path.join(getAppDataPath(), 'ad4m-host/binary');
+export const binaryPath = path.join(getAppDataPath(), 'ad4m/binary');
 
 async function copy(source, target) {
   //@ts-ignore

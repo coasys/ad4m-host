@@ -6,7 +6,7 @@ import { getAppDataPath } from "appdata-path";
 import { binaryPath } from './init';
 
 type Options = {
-  graphqlPort?: number;
+  port?: number;
   hcAdminPort?: number;
   hcAppPort?: number;
   connectHolochain?: boolean;
@@ -18,14 +18,14 @@ export const desc: string = 'Serve ad4m service at given port';
 export const builder = (yargs: Argv) =>
   yargs
     .options({
-      graphqlPort: { type: 'number', describe: 'Use this port to run ad4m GraphQL service', default: 4000 },
+      port: { type: 'number', describe: 'Use this port to run ad4m GraphQL service', default: 4000, alias: 'p' },
       hcAdminPort: { type: 'number', describe: 'Admin port of holochain conductor' },
       hcAppPort: { type: 'number', describe: 'Port used by hApp' },
       connectHolochain: { type: "boolean", describe: 'Flag to connect existing running holochain process'}
     });
 
 export const handler = async (argv: Arguments<Options>): Promise<void> => {
-  const { graphqlPort, hcAdminPort, hcAppPort, connectHolochain } = argv;
+  const { port, hcAdminPort, hcAppPort, connectHolochain } = argv;
 
   const config = {
     appDataPath: getAppDataPath(),
@@ -48,7 +48,7 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
     },
     appBuiltInLangs: [],
     mocks: false,
-    gqlPort: graphqlPort,
+    gqlPort: port,
     hcPortAdmin: hcAdminPort,
     hcPortApp: hcAppPort,
     connectHolochain,
