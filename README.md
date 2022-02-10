@@ -83,9 +83,48 @@ After restart the ad4m service, it's usually necessary to check agent status and
 ./ad4m languages meta --address QmX2e2MaN9ayWaoA4MRhjjVw72RqgxUh7v7SWNbU5Kebpq
 ```
 
-**Create perspective, neighbourhood**
+**Create a perspective, and turns it into a neighbourhood**
 
-TODO
+```shell
+# shall all perspectives
+./ad4m perspective get --all
+
+# add a new perspective
+# it should give a random unique ID that is used to reference it
+./ad4m perspective add --name "A new perspective"
+
+# get a specific perspective
+./ad4m perspective get --uuid "22bdcd2b-44c4-416b-a9b8-8db089a361b0"
+
+# add link to a perspective
+# link contains a source, target and optional predicate
+# in this example, the source is root, target is the note-ipfs expression we just created
+./ad4m perspective addLink --uuid "22bdcd2b-44c4-416b-a9b8-8db089a361b0" --link '{"source":"root","target":"QmYVsrMpiFm
+V9S7bTWNAkUzSqjRJskQ8g4TWKKwKrHAPqL://QmSsCCtXMDAZXMpyiNLzwjGEU4hLmhG7fphidhEEodQ4Wy"}'
+
+# a perspective can be shared by publish it, aka turning it into a neighbourhood.
+# we need a language to store links, here we use social-context link language by templating it.
+# it should give the address of our link language.
+./ad4m languages applyTemplateAndPublish --address QmbCKYo6fWgEP7PiqoYH1jKiJHWFCnGUmwxDfUUEjXQvXB --templateData '{"uid":"123","name":"test-social-context"}'
+
+# check the metadata of our link language
+./ad4m languages meta --address QmYHx1LzwWevEH2dkyEzF3c5ALCHc1PcyBHwukVUdBLFBU
+
+# publish perspective into neighbourhood with perspective id and link language address
+# it should give the url of the neighbourhood, and further used to join the neighbourhood by other users
+./ad4m neighbourhood publishFromPerspective --uuid "22bdcd2b-44c4-416b-a9b8-8db089a361b0" --address "QmYHx1LzwWevEH2dkyEzF3c5ALCHc1PcyBHwukVUdBLFBU" --meta '{"links":[]}'
+
+# another user can join a neighbourhood
+# it should give the id of a new perspective
+./ad4m neighbourhood joinFromUrl --url 'neighbourhood://QmQggyZvTNkPJQM8m3439kCse5ZRRDAdD7NDR64xv5gTjm'
+
+# the link added to a neighbourhood will be synced to another user and available to query
+# it should give the links which usually contains the expression url in target
+./ad4m perspective queryLinks --uuid "ac9e5301-fbf0-4049-abf6-c26f0959d93e" --query "{}"
+
+# query the expression via url
+./ad4m expression get --url "QmYVsrMpiFmV9S7bTWNAkUzSqjRJskQ8g4TWKKwKrHAPqL://QmSsCCtXMDAZXMpyiNLzwjGEU4hLmhG7fphidhEEodQ4Wy"
+```
 
 ## Development
 

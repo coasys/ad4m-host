@@ -64,7 +64,7 @@ async function get(ad4mClient: Ad4mClient, uuid: string, snapshot: boolean, all:
 
   if (uuid) {
     const result = await ad4mClient.perspective.byUUID(uuid);
-    prettify(result)
+    prettify({ name: result.name, uuid: result.uuid, sharedUrl: result.sharedUrl })
     return;
   }
 
@@ -74,7 +74,7 @@ async function get(ad4mClient: Ad4mClient, uuid: string, snapshot: boolean, all:
       return {
         name: proxy.name,
         uuid: proxy.uuid,
-        sharedUrl: proxy.sharedUrl 
+        sharedUrl: proxy.sharedUrl
       }
     });
     prettify(formatted);
@@ -87,7 +87,7 @@ async function get(ad4mClient: Ad4mClient, uuid: string, snapshot: boolean, all:
 async function add(ad4mClient: Ad4mClient, name: string) {
   if (name) {
     const result = await ad4mClient.perspective.add(name);
-    prettify(result)
+    prettify({ name: result.name, uuid: result.uuid, sharedUrl: result.sharedUrl })
     return;
   }
 
@@ -97,7 +97,7 @@ async function add(ad4mClient: Ad4mClient, name: string) {
 async function update(ad4mClient: Ad4mClient, uuid: string, name: string) {
   if (uuid && name) {
     const result = await ad4mClient.perspective.update(uuid, name);
-    prettify(result)
+    prettify({ name: result.name, uuid: result.uuid, sharedUrl: result.sharedUrl })
     return;
   }
 
