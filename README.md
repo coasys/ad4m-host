@@ -99,8 +99,7 @@ After restart the ad4m service, it's usually necessary to check agent status and
 # add link to a perspective
 # link contains a source, target and optional predicate
 # in this example, the source is root, target is the note-ipfs expression we just created
-./ad4m perspective addLink --uuid "22bdcd2b-44c4-416b-a9b8-8db089a361b0" --link '{"source":"root","target":"QmYVsrMpiFm
-V9S7bTWNAkUzSqjRJskQ8g4TWKKwKrHAPqL://QmSsCCtXMDAZXMpyiNLzwjGEU4hLmhG7fphidhEEodQ4Wy"}'
+./ad4m perspective addLink --uuid "22bdcd2b-44c4-416b-a9b8-8db089a361b0" --link '{"source":"root","target":"QmYVsrMpiFmV9S7bTWNAkUzSqjRJskQ8g4TWKKwKrHAPqL://QmSsCCtXMDAZXMpyiNLzwjGEU4hLmhG7fphidhEEodQ4Wy"}'
 
 # a perspective can be shared by publish it, aka turning it into a neighbourhood.
 # we need a language to store links, here we use social-context link language by templating it.
