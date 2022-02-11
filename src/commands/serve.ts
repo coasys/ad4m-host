@@ -1,5 +1,5 @@
 import type { Arguments, Argv } from 'yargs';
-import { init } from "ad4m-executor-test";
+import { init } from "@perspect3vism/ad4m-executor";
 import path from 'path';
 import fs from 'fs';
 import { getAppDataPath } from "appdata-path";

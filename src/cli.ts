@@ -57,9 +57,8 @@ yargs(hideBin(process.argv))
   .strict()
   // Useful aliases.
   .alias({ h: 'help' })
-  .fail((msg, err) => {
+  .fail((msg, _err) => {
     console.error('Running command with error: ', msg);
-    console.error(err.message);
     process.exit(1);
   })
   .argv;
