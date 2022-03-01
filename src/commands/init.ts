@@ -5,12 +5,12 @@
 import type { Arguments, Argv } from 'yargs';
 import path from 'path';
 import fs from 'fs';
+// @ts-ignore
 import { getAppDataPath } from "appdata-path";
 import utils from 'util';
 
 const copyFile = utils.promisify(fs.copyFile);
 const chmod = utils.promisify(fs.chmod);
-export const binaryPath = path.join(getAppDataPath(), 'ad4m/binary');
 
 async function copy(source, target) {
   //@ts-ignore
@@ -32,6 +32,7 @@ async function copy(source, target) {
 
 type Options = {
   hcOnly?: boolean;
+  relativePath?: string;
 };
 
 export const command: string = 'init';
@@ -40,11 +41,18 @@ export const desc: string = 'Init ad4m service with prebuild binary.';
 export const builder = (yargs: Argv) =>
   yargs
     .options({
-      hcOnly: { type: "boolean" }
+      hcOnly: { type: "boolean" },
+      relativePath: { 
+        type: 'string', 
+        describe: 'Relative path to the appdata for ad4m-host to store binaries', 
+        alias: 'rp'
+      },
     });
 
 export const handler = async (argv: Arguments<Options>): Promise<void> => {
-  const { hcOnly } = argv;
+  const { hcOnly, relativePath } = argv;
+  const binaryPath = path.join(getAppDataPath(relativePath || 'ad4m-host'), 'binary')
+  
   if(!fs.existsSync(binaryPath)) {
     fs.mkdirSync(binaryPath, { recursive: true })
   }
