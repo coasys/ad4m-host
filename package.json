@@ -14,7 +14,7 @@
     "package-linux": "pkg . -o dist/ad4m-linux-x64 -t node16-linux-x64 --public-packages \"*\"",
     "package-windows": "pkg . -o dist/ad4m-windows-x64 -t node16-windows-x64 --public-packages \"*\"",
     "release-macos": "npm run build && npm run package-macos",
-    "dev": "npm run build && node build/cli.js",
+    "dev": "npx ts-node src/cli.ts serve",
     "postinstall": "rm -rf node_modules/ipfs-core-types/src"
   },
   "pkg": {
