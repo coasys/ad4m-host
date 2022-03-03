@@ -54,7 +54,7 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
   const gqlPort = await getPort({ port })
 
   const config = {
-    appDataPath: getAppDataPath(relativePath || 'ad4m'),
+    appDataPath: getAppDataPath(relativePath || ''),
     resourcePath: binaryPath,
     appDefaultLangPath: path.join(__dirname, "../../temp/languages"),
     ad4mBootstrapLanguages: {
