@@ -51,7 +51,7 @@ export const builder = (yargs: Argv) =>
 
 export const handler = async (argv: Arguments<Options>): Promise<void> => {
   const { hcOnly, relativePath } = argv;
-  const binaryPath = path.join(getAppDataPath(relativePath || 'ad4m-host'), 'binary')
+  const binaryPath = path.join(getAppDataPath(relativePath || 'ad4m'), 'binary')
   
   if(!fs.existsSync(binaryPath)) {
     fs.mkdirSync(binaryPath, { recursive: true })

@@ -49,12 +49,12 @@ export const builder = (yargs: Argv) =>
 export const handler = async (argv: Arguments<Options>): Promise<void> => {
   const { port, hcAdminPort, hcAppPort, connectHolochain, relativePath } = argv;
 
-  const binaryPath = path.join(getAppDataPath(relativePath || 'ad4m-host'), 'binary');
+  const binaryPath = path.join(getAppDataPath(relativePath || 'ad4m'), 'binary');
 
   const gqlPort = await getPort({ port })
 
   const config = {
-    appDataPath: getAppDataPath(relativePath || 'ad4m-host'),
+    appDataPath: getAppDataPath(relativePath || 'ad4m'),
     resourcePath: binaryPath,
     appDefaultLangPath: path.join(__dirname, "../../temp/languages"),
     ad4mBootstrapLanguages: {
