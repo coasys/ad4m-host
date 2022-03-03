@@ -32,7 +32,7 @@ async function copy(source, target) {
 
 type Options = {
   hcOnly?: boolean;
-  relativePath?: string;
+  dataPath?: string;
 };
 
 export const command: string = 'init';
@@ -42,16 +42,16 @@ export const builder = (yargs: Argv) =>
   yargs
     .options({
       hcOnly: { type: "boolean" },
-      relativePath: { 
+      dataPath: { 
         type: 'string', 
-        describe: 'Relative path to the appdata for ad4m-host to store binaries', 
+        describe: 'The relative path for storing ad4m data', 
         alias: 'rp'
       },
     });
 
 export const handler = async (argv: Arguments<Options>): Promise<void> => {
-  const { hcOnly, relativePath } = argv;
-  const binaryPath = path.join(getAppDataPath(relativePath || 'ad4m'), 'binary')
+  const { hcOnly, dataPath } = argv;
+  const binaryPath = path.join(getAppDataPath(dataPath || 'ad4m'), 'binary')
   
   if(!fs.existsSync(binaryPath)) {
     fs.mkdirSync(binaryPath, { recursive: true })

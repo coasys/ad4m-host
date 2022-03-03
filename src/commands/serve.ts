@@ -12,7 +12,7 @@ type Options = {
   hcAdminPort?: number;
   hcAppPort?: number;
   connectHolochain?: boolean;
-  relativePath?: string;
+  dataPath?: string;
 };
 
 export const command: string = 'serve';
@@ -39,22 +39,22 @@ export const builder = (yargs: Argv) =>
         type: "boolean", 
         describe: 'Flag to connect existing running holochain process'
       },
-      relativePath: { 
+      dataPath: { 
         type: 'string', 
-        describe: 'Relative path to the appdata for ad4m-host to store binaries', 
+        describe: 'The relative path for storing ad4m data', 
         alias: 'rp'
       },
     });
 
 export const handler = async (argv: Arguments<Options>): Promise<void> => {
-  const { port, hcAdminPort, hcAppPort, connectHolochain, relativePath } = argv;
+  const { port, hcAdminPort, hcAppPort, connectHolochain, dataPath } = argv;
 
-  const binaryPath = path.join(getAppDataPath(relativePath || 'ad4m'), 'binary');
+  const binaryPath = path.join(getAppDataPath(dataPath || 'ad4m'), 'binary');
 
   const gqlPort = await getPort({ port })
 
   const config = {
-    appDataPath: getAppDataPath(relativePath || ''),
+    appDataPath: getAppDataPath(dataPath || ''),
     resourcePath: binaryPath,
     appDefaultLangPath: path.join(__dirname, "../../temp/languages"),
     ad4mBootstrapLanguages: {
