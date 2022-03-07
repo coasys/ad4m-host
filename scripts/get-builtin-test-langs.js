@@ -8,7 +8,7 @@ const languages = {
     targetDnaName: "agent-store",
     dna: "https://github.com/perspect3vism/agent-language/releases/download/0.0.8/agent-store.dna",
     bundle:
-      "https://github.com/perspect3vism/agent-language/releases/download/0.0.8/bundle.js",
+      "https://github.com/perspect3vism/agent-language/releases/download/0.0.10/bundle.js",
   },
   languages: {
       targetDnaName: "languages",
@@ -19,10 +19,10 @@ const languages = {
     bundle: "https://github.com/juntofoundation/neighbourhood-language/releases/download/0.0.5/bundle.js",
   },
   "note-ipfs": {
-    bundle: "https://github.com/perspect3vism/lang-note-ipfs/releases/download/0.0.1/bundle.js",
+    bundle: "https://github.com/perspect3vism/lang-note-ipfs/releases/download/0.0.4/bundle.js",
   },
   "direct-message-language": {
-    bundle: "https://github.com/perspect3vism/direct-message-language/releases/download/0.0.3/bundle.js"
+    bundle: "https://github.com/perspect3vism/direct-message-language/releases/download/0.0.4/bundle.js"
   }
 };
 
