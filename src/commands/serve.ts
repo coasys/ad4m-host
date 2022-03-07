@@ -44,19 +44,20 @@ export const builder = (yargs: Argv) =>
         describe: 'The relative path for storing ad4m data', 
         alias: 'rp'
       },
-      appDefaultLangPath: {
+      defaultLangPath: {
         type: 'string',
-        describe: 'Location of the custom default languages',
+        describe: 'Path of the default languages used to start ad4m service',
+        default: '../../temp/languages',
         alias: 'dlp'
       }
     });
 
 export const handler = async (argv: Arguments<Options>): Promise<void> => {
-  const { port, hcAdminPort, hcAppPort, connectHolochain, dataPath, appDefaultLangPath } = argv;
+  const { port, hcAdminPort, hcAppPort, connectHolochain, dataPath, defaultLangPath } = argv;
 
   const binaryPath = path.join(getAppDataPath(dataPath || 'ad4m'), 'binary');
 
-  const appDefaultLangLocation: string = path.join(__dirname, appDefaultLangPath as string || "../../temp/languages");
+  const appDefaultLangLocation: string = path.join(__dirname, defaultLangPath as string);
 
   const gqlPort = await getPort({ port })
 
