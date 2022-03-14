@@ -57,7 +57,9 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
 
   const binaryPath = path.join(getAppDataPath(dataPath || 'ad4m'), 'binary');
 
-  const appDefaultLangLocation: string = path.join(__dirname, defaultLangPath as string);
+  const builtInlang = defaultLangPath as string;
+
+  const appDefaultLangLocation: string =  path.isAbsolute(builtInlang) ? builtInlang : path.join(__dirname, builtInlang);
 
   const gqlPort = await getPort({ port })
 
