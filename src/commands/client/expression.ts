@@ -59,8 +59,15 @@ async function get(ad4mClient: Ad4mClient, url: string, raw: boolean) {
 }
 
 async function create(ad4mClient: Ad4mClient, content: string, address: string) {
+  var parsedContent;
+  try {
+    parsedContent = JSON.parse(content);
+  } catch (e) {
+    parsedContent = content;
+  }
+
   if (content && address) {
-    const expression = await ad4mClient.expression.create(content, address);
+    const expression = await ad4mClient.expression.create(parsedContent, address);
     prettify(expression)
     return;
   }
