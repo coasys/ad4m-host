@@ -1,4 +1,4 @@
-import type { Arguments, Argv } from 'yargs';
+import { Arguments, Argv, string } from 'yargs';
 // @ts-ignore
 import { init } from "@perspect3vism/ad4m-executor";
 import path from 'path';
@@ -13,6 +13,10 @@ type Options = {
   hcAppPort?: number;
   connectHolochain?: boolean;
   dataPath?: string;
+  networkBootstrapSeed?: string;
+  languageLanguageOnly?: boolean;
+  bootstrapLanguage?: string;
+  bootstrapPerspective?: string;
 };
 
 export const command: string = 'serve';
@@ -49,11 +53,31 @@ export const builder = (yargs: Argv) =>
         describe: 'Path of the default languages used to start ad4m service',
         default: '../../temp/languages',
         alias: 'dlp'
+      },
+      networkBootstrapSeed: {
+        type: 'string',
+        describe: 'Path to the seed file',
+        default: '../../seed.json',
+        alias: 'nbf'
+      },
+      languageLanguageOnly: {
+        type: 'boolean',
+        describe: 'Should the ad4m-executor be started with only the languageLanguage, so it can be used for publish other system languages',
+        default: false,
+        alias: 'll'
+      },
+      bootstrapLanguage: {
+        type: 'string',
+        describe: 'Path to Bootstrap languages json file (list of languages)',
+      },
+      bootstrapPerspective: {
+        type: 'string',
+        describe: 'Path to Bootstrap perspectives json file (list of perspectives)'
       }
     });
 
 export const handler = async (argv: Arguments<Options>): Promise<void> => {
-  const { port, hcAdminPort, hcAppPort, connectHolochain, dataPath, defaultLangPath } = argv;
+  const { port, hcAdminPort, hcAppPort, connectHolochain, dataPath, defaultLangPath, networkBootstrapSeed, languageLanguageOnly } = argv;
 
   const binaryPath = path.join(getAppDataPath(dataPath || 'ad4m'), 'binary');
 
@@ -63,45 +87,17 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
 
   const gqlPort = await getPort({ port })
 
+  const seedPath = path.isAbsolute(networkBootstrapSeed) ? networkBootstrapSeed: path.join(__dirname, networkBootstrapSeed); 
+
+  const appDataPath = getAppDataPath(dataPath || '');
+
   const config = {
-    appDataPath: getAppDataPath(dataPath || ''),
+    appDataPath: appDataPath,
     resourcePath: binaryPath,
-    appDefaultLangPath: appDefaultLangLocation,
-    ad4mBootstrapLanguages: {
-      agents: "agent-expression-store",
-      languages: "languages",
-      neighbourhoods: "neighbourhood-store"
-    },
-    ad4mBootstrapFixtures: {
-      languages: [
-        {
-          address: "QmRENn31FvsZZx99tg8nd8oM52MmGYa1tLUYaDvYdjnJsb",
-          meta: {
-            author:
-              "did:key:zQ3shkkuZLvqeFgHdgZgFMUx8VGkgVWsLA83w2oekhZxoCW2n",
-            timestamp: "2021-10-07T21:39:36.607Z",
-            data: {
-              name: "Direct Message Language",
-              address: "QmRENn31FvsZZx99tg8nd8oM52MmGYa1tLUYaDvYdjnJsb",
-              description:
-                "Template source for personal, per-agent DM languages. Holochain based.",
-              possibleTemplateParams: [
-                "recipient_did",
-                "recipient_hc_agent_pubkey",
-              ],
-              sourceCodeLink:
-                "https://github.com/perspect3vism/direct-message-language",
-            },
-            proof: {
-              signature:
-                "e933e34f88694816ea91361605c8c2553ceeb96e847f8c73b75477cc7d9bacaf11eae34e38c2e3f474897f59d20f5843d6f1d2c493b13552093bc16472b0ac33",
-              key: "#zQ3shkkuZLvqeFgHdgZgFMUx8VGkgVWsLA83w2oekhZxoCW2n",
-              valid: true,
-            },
-          },
-          bundle: fs.readFileSync(path.join(appDefaultLangLocation, 'direct-message-language', 'build', 'bundle.js')).toString(),
-        },
-      ],
+    networkBootstrapSeed: seedPath,
+    languageLanguageOnly: languageLanguageOnly,
+    bootstrapFixtures: {
+      languages: [],
       perspectives: [],
     },
     appBuiltInLangs: [],
@@ -109,8 +105,10 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
     gqlPort,
     hcPortAdmin: hcAdminPort,
     hcPortApp: hcAppPort,
+    ipfsRepoPath: appDataPath,
     connectHolochain,
   };
+
   const ad4mCore = await init(config);
   
   await ad4mCore.waitForAgent();

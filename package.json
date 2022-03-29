@@ -14,7 +14,7 @@
     "package-linux": "pkg . -o dist/ad4m-linux-x64 -t node16-linux-x64 --public-packages \"*\"",
     "package-windows": "pkg . -o dist/ad4m-windows-x64 -t node16-windows-x64 --public-packages \"*\"",
     "release-macos": "npm run build && npm run package-macos",
-    "dev": "npx ts-node src/cli.ts serve",
+    "dev": "npm run build && node build/cli.js",
     "postinstall": "rm -rf node_modules/ipfs-core-types/src"
   },
   "pkg": {
@@ -44,8 +44,8 @@
   "homepage": "https://github.com/fluxsocial/ad4m-host#readme",
   "dependencies": {
     "@apollo/client": "3.4.17",
-    "@perspect3vism/ad4m": "^0.1.25",
-    "@perspect3vism/ad4m-executor": "^0.1.32",
+    "@perspect3vism/ad4m": "^0.1.29",
+    "@perspect3vism/ad4m-executor": "^0.1.35",
     "appdata-path": "^1.0.0",
     "esm": "^3.2.25",
     "fs-extra": "^9.1.0",
