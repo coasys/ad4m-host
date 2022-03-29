@@ -77,7 +77,7 @@ export const builder = (yargs: Argv) =>
     });
 
 export const handler = async (argv: Arguments<Options>): Promise<void> => {
-  const { port, hcAdminPort, hcAppPort, connectHolochain, dataPath, defaultLangPath, networkBootstrapSeed, languageLanguageOnly } = argv;
+  const { port, hcAdminPort, hcAppPort, connectHolochain, dataPath, defaultLangPath, networkBootstrapSeed, languageLanguageOnly, bootstrapLanguage, bootstrapPerspective } = argv;
 
   const binaryPath = path.join(getAppDataPath(dataPath || 'ad4m'), 'binary');
 
@@ -91,14 +91,18 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
 
   const appDataPath = getAppDataPath(dataPath || '');
 
+  const bLanguage = bootstrapLanguage ? await import(path.isAbsolute(bootstrapLanguage) ? bootstrapLanguage: path.join(__dirname, bootstrapLanguage)) : [];
+
+  const bPerspective = bootstrapPerspective ? await import(path.isAbsolute(bootstrapPerspective) ? bootstrapPerspective: path.join(__dirname, bootstrapPerspective)) : [];
+
   const config = {
     appDataPath: appDataPath,
     resourcePath: binaryPath,
     networkBootstrapSeed: seedPath,
     languageLanguageOnly: languageLanguageOnly,
     bootstrapFixtures: {
-      languages: [],
-      perspectives: [],
+      languages: [...bLanguage],
+      perspectives: [...bPerspective],
     },
     appBuiltInLangs: [],
     mocks: false,
