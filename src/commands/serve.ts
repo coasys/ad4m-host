@@ -57,7 +57,7 @@ export const builder = (yargs: Argv) =>
       networkBootstrapSeed: {
         type: 'string',
         describe: 'Path to the seed file',
-        default: '../../seed.json',
+        require: true,
         alias: 'nbf'
       },
       languageLanguageOnly: {
