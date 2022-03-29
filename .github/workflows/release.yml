@@ -30,7 +30,7 @@ jobs:
         toolchain: 1.58
     
     - name: Install dependencies
-      run: npm install && npm run get-languages
+      run: npm install
     - name: Build Holochain 
       env:
         SQLCIPHER_STATIC: 1
