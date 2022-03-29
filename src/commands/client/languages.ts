@@ -74,12 +74,12 @@ async function get(ad4mClient: Ad4mClient, address: string, filter: string, all:
     prettify(languages)
     return;
   }
-  console.info('Language get action is missiong param <address>/<filter>/<all>');
+  console.info('Language get action is missing param <address>/<filter>/<all>');
 }
 
 async function writeSettings(ad4mClient: Ad4mClient, address?: string, settings?: string) {
   if (address == undefined || settings == undefined) {
-    console.info('Language writeSettings action is missiong params <address> and <settings>');
+    console.info('Language writeSettings action is missing params <address> and <settings>');
     return;
   }
   const result = await ad4mClient.languages.writeSettings(address!, settings!);
@@ -133,7 +133,7 @@ async function getMeta(ad4mClient: Ad4mClient, address?: string) {
     prettify(result);
     return;
   }
-  console.info('Language meta action is missiong param <address>');
+  console.info('Language meta action is missing param <address>');
 }
 
 async function source(ad4mClient: Ad4mClient, address?: string) {
@@ -142,5 +142,5 @@ async function source(ad4mClient: Ad4mClient, address?: string) {
     console.log(result);
     return;
   }
-  console.info('Language source action is missiong param <address>');
+  console.info('Language source action is missing param <address>');
 }
