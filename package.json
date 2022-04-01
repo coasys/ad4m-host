@@ -50,9 +50,9 @@
     "fs-extra": "^9.1.0",
     "get-port": "5.1.1",
     "node-fetch": "^2.5.11",
-    "node-wget-js": "^1.0.1",
     "readline-sync": "^1.4.10",
     "unzipper": "^0.10.11",
+    "wget-improved": "^3.3.1",
     "ws": "^8.3.0",
     "yargs": "^17.3.1"
   },

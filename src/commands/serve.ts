@@ -6,7 +6,7 @@ import fs from 'fs';
 // @ts-ignore
 import { getAppDataPath } from "appdata-path";
 import getPort from 'get-port';
-import wget from "node-wget-js";
+import wget from "wget-improved";
 import fetch from "node-fetch";
 
 type Options = {
@@ -72,7 +72,8 @@ export const builder = (yargs: Argv) =>
       },
       appLangAliases: {
         type: 'string',
-        describe: 'Language aliases to be loaded into ad4m-executor'
+        describe: 'Language aliases to be loaded into ad4m-executor',
+        default: '{}'
       }
     });
 
