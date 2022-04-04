@@ -6,20 +6,20 @@ import fs from 'fs';
 // @ts-ignore
 import { getAppDataPath } from "appdata-path";
 import getPort from 'get-port';
-import wget from "wget-improved";
-import fetch from "node-fetch";
+import { fetchLatestBootstrapSeed } from '../utils/fetchLatestBootstrapSeed';
+import { getConfig } from '../utils/getConfig';
+import { dataPath } from '@perspect3vism/ad4m-executor/src/core/Config';
 
 type Options = {
   port?: number;
   hcAdminPort?: number;
   hcAppPort?: number;
   connectHolochain?: boolean;
-  dataPath?: string;
-  networkBootstrapSeed?: string;
   languageLanguageOnly?: boolean;
   bootstrapLanguage?: string;
   bootstrapPerspective?: string;
   appLangAliases?: string;
+  dataPath?: string;
 };
 
 export const command: string = 'serve';
@@ -51,11 +51,6 @@ export const builder = (yargs: Argv) =>
         describe: 'The relative path for storing ad4m data', 
         alias: 'rp'
       },
-      networkBootstrapSeed: {
-        type: 'string',
-        describe: 'Path to the seed file',
-        alias: 'nbf'
-      },
       languageLanguageOnly: {
         type: 'boolean',
         describe: 'Should the ad4m-executor be started with only the languageLanguage, so it can be used for publish other system languages',
@@ -78,7 +73,15 @@ export const builder = (yargs: Argv) =>
     });
 
 export const handler = async (argv: Arguments<Options>): Promise<void> => {
-  const { port, hcAdminPort, hcAppPort, connectHolochain, dataPath, networkBootstrapSeed, languageLanguageOnly, bootstrapLanguage, bootstrapPerspective, appLangAliases } = argv;
+  const { port, hcAdminPort, hcAppPort, connectHolochain, languageLanguageOnly, dataPath, bootstrapLanguage, bootstrapPerspective, appLangAliases } = argv;
+
+  const globalConfig = getConfig();
+
+  if(!globalConfig[dataPath || '']) {
+    throw Error('No config found, please run ad4m-host init with the dataPath & networkBootstrapSeed params')
+  }
+
+  const { seedPath } = globalConfig[dataPath || ''];
 
   const binaryPath = path.join(getAppDataPath(dataPath || 'ad4m'), 'binary');
 
@@ -88,15 +91,6 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
 
   if (!fs.existsSync(appDataPath)) {
     fs.mkdirSync(appDataPath);
-  }
-
-  let seedPath;
-  if (!networkBootstrapSeed) {
-    console.log("No bootstrap seed supplied... downloading the latest AD4M bootstrap seed");
-    await fetchLatestBootstrapSeed(appDataPath);
-    seedPath = path.join(appDataPath, "mainnetSeed.json");
-  } else {
-    seedPath = path.isAbsolute(networkBootstrapSeed) ? networkBootstrapSeed: path.join(__dirname, networkBootstrapSeed); 
   }
 
   const bLanguage = bootstrapLanguage ? await import(path.isAbsolute(bootstrapLanguage) ? bootstrapLanguage: path.join(__dirname, bootstrapLanguage)) : [];
@@ -132,28 +126,3 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
   await ad4mCore.initLanguages();
   console.log("All languages initialized.");
 };
-
-async function fetchLatestBootstrapSeed(appDataPath: string) {
-  return new Promise(async (resolve, reject) => {
-    const response = await fetch("https://api.github.com/repos/perspect3vism/ad4m-seeds/releases/latest")
-    const data: any = await response.json();
-  
-    const dest = path.join(appDataPath, 'mainnetSeed.json');
-    let download: any;
-
-    const link = data.assets.find((e: any) =>
-      e.name.includes("mainnetSeed.json")
-    ).browser_download_url;
-    download = wget.download(link, dest)
-    download.on('end', async () => {
-      await fs.chmodSync(dest, '777');
-      console.log('Mainnet seed download succesfully')
-      resolve(null);
-    })
-
-    download.on('error', async (err: any) => {
-      console.log("Something went wrong downloading mainnet seed");
-      reject(err);
-    })
-  });
-}

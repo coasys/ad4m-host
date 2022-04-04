@@ -8,6 +8,9 @@ import fs from 'fs';
 // @ts-ignore
 import { getAppDataPath } from "appdata-path";
 import utils from 'util';
+import { fetchLatestBootstrapSeed } from '../utils/fetchLatestBootstrapSeed';
+import { getConfig } from '../utils/getConfig';
+import ReadlineSync from 'readline-sync';
 
 const copyFile = utils.promisify(fs.copyFile);
 const chmod = utils.promisify(fs.chmod);
@@ -33,6 +36,8 @@ async function copy(source, target) {
 type Options = {
   hcOnly?: boolean;
   dataPath?: string;
+  networkBootstrapSeed?: string;
+  override?: boolean;
 };
 
 export const command: string = 'init';
@@ -47,10 +52,20 @@ export const builder = (yargs: Argv) =>
         describe: 'The relative path for storing ad4m data', 
         alias: 'rp'
       },
+      networkBootstrapSeed: {
+        type: 'string',
+        describe: 'Path to the seed file',
+        alias: 'nbf'
+      },
+      override: {
+        type: 'boolean',
+        describe: 'Override the existing config file',
+        alias: 'o'
+      },
     });
 
 export const handler = async (argv: Arguments<Options>): Promise<void> => {
-  const { hcOnly, dataPath } = argv;
+  const { hcOnly, dataPath = '', networkBootstrapSeed, override } = argv;
   const binaryPath = path.join(getAppDataPath(dataPath || 'ad4m'), 'binary')
   
   if(!fs.existsSync(binaryPath)) {
@@ -74,5 +89,63 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
   await copy(hcSource, hcTarget);
   await chmod(hcTarget, '755');
 
+  let seedPath;
+  let configDataPath;
+  let globalConfig;
+
+  try {
+    globalConfig = getConfig();
+
+    if (dataPath || networkBootstrapSeed) {
+      if (override === undefined) {
+        const decision = ReadlineSync.question("There is a already a config present, do you want to override it? (Y|N): ");
+  
+        if (decision === 'Y' || decision === 'y' || override) {
+          configDataPath = dataPath;
+      
+          seedPath = getSeedFilePath(dataPath, networkBootstrapSeed);
+        }
+      }
+    } else {
+      if (!globalConfig[dataPath]) {
+        configDataPath = dataPath;
+        seedPath = await getSeedFilePath(dataPath, networkBootstrapSeed)
+      } else {
+        seedPath = globalConfig[dataPath].seedPath;
+        configDataPath = globalConfig[dataPath].dataPath;
+      }
+    }
+
+  } catch (e) {
+    console.log(e)
+    configDataPath = dataPath;
+    seedPath = getSeedFilePath(dataPath, networkBootstrapSeed)
+  }
+  
+  const config = {
+    dataPath: configDataPath,
+    seedPath
+  }
+
+  console.log('config', config)
+
+  const dest = path.join(getAppDataPath(''), 'ad4m-host-config.json');
+
+  globalConfig[configDataPath] = config;
+
+  fs.writeFileSync(dest, JSON.stringify(globalConfig))
+
   process.exit();
 };
+
+async function getSeedFilePath(dataPath?: string, networkBootstrapSeed?: string) {
+  const appDataPath = getAppDataPath(dataPath || '');
+
+  if (!networkBootstrapSeed) {
+    console.log("No bootstrap seed supplied... downloading the latest AD4M bootstrap seed");
+    await fetchLatestBootstrapSeed(appDataPath);
+    return path.join(appDataPath, "mainnetSeed.json");
+  } else {
+    return path.isAbsolute(networkBootstrapSeed) ? networkBootstrapSeed: path.join(__dirname, networkBootstrapSeed); 
+  } 
+}
