@@ -48,7 +48,7 @@ export const builder = (yargs: Argv) =>
       },
       dataPath: { 
         type: 'string', 
-        describe: 'Name of directory to store ad4m data in within the systems app data path', 
+        describe: 'Name of directory (within the systems app data path) to store ad4m data', 
         alias: 'rp'
       },
       languageLanguageOnly: {
