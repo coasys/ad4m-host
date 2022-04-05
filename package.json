@@ -1,6 +1,6 @@
 {
   "name": "ad4m-host",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Self hosting ad4m service",
   "bin": {
     "ad4m": "build/cli.js"
