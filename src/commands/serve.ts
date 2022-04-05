@@ -1,4 +1,4 @@
-import { Arguments, Argv, string } from 'yargs';
+import { Arguments, Argv } from 'yargs';
 // @ts-ignore
 import { init } from "@perspect3vism/ad4m-executor";
 import path from 'path';
@@ -6,17 +6,18 @@ import fs from 'fs';
 // @ts-ignore
 import { getAppDataPath } from "appdata-path";
 import getPort from 'get-port';
+import { getConfig } from '../utils/config';
 
 type Options = {
   port?: number;
   hcAdminPort?: number;
   hcAppPort?: number;
   connectHolochain?: boolean;
-  dataPath?: string;
-  networkBootstrapSeed?: string;
   languageLanguageOnly?: boolean;
   bootstrapLanguage?: string;
   bootstrapPerspective?: string;
+  appLangAliases?: string;
+  dataPath?: string;
 };
 
 export const command: string = 'serve';
@@ -45,20 +46,8 @@ export const builder = (yargs: Argv) =>
       },
       dataPath: { 
         type: 'string', 
-        describe: 'The relative path for storing ad4m data', 
+        describe: 'Name of directory (within the systems app data path) to store ad4m data', 
         alias: 'rp'
-      },
-      defaultLangPath: {
-        type: 'string',
-        describe: 'Path of the default languages used to start ad4m service',
-        default: '../../temp/languages',
-        alias: 'dlp'
-      },
-      networkBootstrapSeed: {
-        type: 'string',
-        describe: 'Path to the seed file',
-        require: true,
-        alias: 'nbf'
       },
       languageLanguageOnly: {
         type: 'boolean',
@@ -73,23 +62,34 @@ export const builder = (yargs: Argv) =>
       bootstrapPerspective: {
         type: 'string',
         describe: 'Path to Bootstrap perspectives json file (list of perspectives)'
+      },
+      appLangAliases: {
+        type: 'string',
+        describe: 'Language aliases to be loaded into ad4m-executor',
+        default: '{}'
       }
     });
 
 export const handler = async (argv: Arguments<Options>): Promise<void> => {
-  const { port, hcAdminPort, hcAppPort, connectHolochain, dataPath, defaultLangPath, networkBootstrapSeed, languageLanguageOnly, bootstrapLanguage, bootstrapPerspective } = argv;
+  const { port, hcAdminPort, hcAppPort, connectHolochain, languageLanguageOnly, dataPath, bootstrapLanguage, bootstrapPerspective, appLangAliases } = argv;
+
+  const globalConfig = getConfig();
+
+  if(!globalConfig[dataPath || '']) {
+    throw Error('No config found, please run ad4m-host init with the dataPath & networkBootstrapSeed params')
+  }
+
+  const { seedPath } = globalConfig[dataPath || ''];
 
   const binaryPath = path.join(getAppDataPath(dataPath || 'ad4m'), 'binary');
 
-  const builtInlang = defaultLangPath as string;
-
-  const appDefaultLangLocation: string =  path.isAbsolute(builtInlang) ? builtInlang : path.join(__dirname, builtInlang);
-
   const gqlPort = await getPort({ port })
 
-  const seedPath = path.isAbsolute(networkBootstrapSeed) ? networkBootstrapSeed: path.join(__dirname, networkBootstrapSeed); 
-
   const appDataPath = getAppDataPath(dataPath || '');
+
+  if (!fs.existsSync(appDataPath)) {
+    fs.mkdirSync(appDataPath);
+  }
 
   const bLanguage = bootstrapLanguage ? await import(path.isAbsolute(bootstrapLanguage) ? bootstrapLanguage: path.join(__dirname, bootstrapLanguage)) : [];
 
@@ -104,7 +104,7 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
       languages: [...bLanguage],
       perspectives: [...bPerspective],
     },
-    appBuiltInLangs: [],
+    appLangAliases: JSON.parse(appLangAliases),
     mocks: false,
     gqlPort,
     hcPortAdmin: hcAdminPort,
