@@ -6,9 +6,7 @@ import fs from 'fs';
 // @ts-ignore
 import { getAppDataPath } from "appdata-path";
 import getPort from 'get-port';
-import { fetchLatestBootstrapSeed } from '../utils/fetchLatestBootstrapSeed';
-import { getConfig } from '../utils/getConfig';
-import { dataPath } from '@perspect3vism/ad4m-executor/src/core/Config';
+import { getConfig } from '../utils/config';
 
 type Options = {
   port?: number;
@@ -48,7 +46,7 @@ export const builder = (yargs: Argv) =>
       },
       dataPath: { 
         type: 'string', 
-        describe: 'Name of directory to store ad4m data in within the systems app data path', 
+        describe: 'Name of directory to store ad4m data in the systems app data path', 
         alias: 'rp'
       },
       languageLanguageOnly: {

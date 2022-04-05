@@ -2,9 +2,16 @@ import getAppDataPath from "appdata-path";
 import path from "path";
 import fs from 'fs';
 
-export function getConfig(dataPath = '') {
+export const CONFIG = 'ad4m-host-config.json';
+
+type GetConfigReturntype = {
+  seedPath?: string;
+  dataPath?: string;
+}
+
+export function getConfig(dataPath = ''): GetConfigReturntype {
   try {
-    const ad4mHostConfig = path.join(getAppDataPath(), 'ad4m-host-config.json');
+    const ad4mHostConfig = path.join(getAppDataPath(dataPath), CONFIG);
 
     const config = fs.readFileSync(ad4mHostConfig, { encoding: 'utf-8' })
 
@@ -12,7 +19,7 @@ export function getConfig(dataPath = '') {
 
     return parsed;  
   } catch (e) { 
-    const dest = path.join(getAppDataPath(''), 'ad4m-host-config.json');
+    const dest = path.join(getAppDataPath(''), CONFIG);
 
     fs.writeFileSync(dest, JSON.stringify({}))
 
