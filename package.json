@@ -1,6 +1,6 @@
 {
   "name": "ad4m-host",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Self hosting ad4m service",
   "bin": {
     "ad4m": "build/cli.js"
@@ -44,7 +44,7 @@
   "dependencies": {
     "@apollo/client": "3.4.17",
     "@perspect3vism/ad4m": "^0.1.29",
-    "@perspect3vism/ad4m-executor": "^0.1.35",
+    "@perspect3vism/ad4m-executor": "^0.1.36",
     "appdata-path": "^1.0.0",
     "esm": "^3.2.25",
     "fs-extra": "^9.1.0",
