@@ -114,14 +114,15 @@ async function getSeedConfig(dataPath?: string, networkBootstrapSeed?: string, o
     globalConfig = getConfig();
 
     if (dataPath || networkBootstrapSeed) {
-      if (override === undefined) {
-        const decision = ReadlineSync.question("There is a already a config present, do you want to override it? (Y|N): ");
-  
-        if (decision === 'Y' || decision === 'y' || override) {
-          configDataPath = dataPath;
+      let decision;
       
-          seedPath = getSeedFilePath(dataPath, networkBootstrapSeed);
-        }
+      if (override === undefined) {
+        decision = ReadlineSync.question("There is a already a config present, do you want to override it? (Y|N): ");  
+      }
+
+      if (decision === 'Y' || decision === 'y' || override) {
+        configDataPath = dataPath;
+        seedPath = await getSeedFilePath(dataPath, networkBootstrapSeed);
       }
     } else {
       if (!globalConfig[dataPath]) {

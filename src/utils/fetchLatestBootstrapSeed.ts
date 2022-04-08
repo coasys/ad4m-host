@@ -16,7 +16,7 @@ export async function fetchLatestBootstrapSeed(appDataPath: string) {
     let download: any;
 
     const link = data.assets.find((e: any) =>
-      e.name.includes(MAINNET_SEED)
+      e.name.includes('mainnetSeed.json')
     ).browser_download_url;
     download = wget.download(link, dest)
     download.on('end', async () => {
