@@ -22,14 +22,33 @@ Get help inforamtion for available commands,
 Initialize the dependencies by coping the holochain binaries (**Required**),
 
 ```shell
+# Initializes the ad4m-host with default config
 ./ad4m init
+
+# Initalize ad4m-host with different environment
+./ad4m init --dataPath environment_name --networkBootstrapSeed ./custom_seed.json
+
+# To override the environment you can use overrideConfig flag
+./ad4m init --dataPath environment_name --networkBootstrapSeed ./custom_seed.json --overrideConfig
 ```
 
 Run ad4m service with or without connecting to an existing running holochain process,
 
 ```shell
-./ad4m serve --connectHolochain  # connect with existing running holochain process
-./ad4m serve # start its own holochain process
+ # connect with existing running holochain process
+./ad4m serve --connectHolochain 
+
+# start its own holochain process (will use the default environment i.e ad4m)
+./ad4m serve
+
+# will start holochain process for this environment
+./ad4m serve --dataPath environment_name
+
+# Start server with only languageLanguage and ignore other languages
+./ad4m serve --languageLanguageOnly
+
+# Pass custom bootstrap languages & perspective
+./ad4m serve --bootstrapLanguage "stringified_language_json" --bootstrapPerspective "stringified_perspective_json"
 ```
 
 When running the AD4M executor for the very first time, we need to generate an agent (i.e. DID and keys) with:
