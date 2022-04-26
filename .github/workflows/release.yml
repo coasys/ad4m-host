@@ -31,9 +31,28 @@ jobs:
     
     - name: Install dependencies
       run: npm install
-    - name: Build Holochain 
+    - name: Build Holochain (Ubuntu)
       env:
         SQLCIPHER_STATIC: 1
+      if: matrix.platform == 'ubuntu-latest'
+      run: |
+        cargo install lair_keystore --version 0.0.9
+        cargo install --locked holochain --git https://github.com/holochain/holochain.git --tag holochain-0.0.127
+        cargo install holochain_cli --version 0.0.28
+        ./scripts/copy-hc.sh
+    - name: Build Holochain (MacOs)
+      env:
+        SQLCIPHER_STATIC: 1
+      if: matrix.platform == 'macos-latest'
+      run: |
+        cargo install lair_keystore --version 0.0.9
+        cargo install --locked holochain --git https://github.com/holochain/holochain.git --tag holochain-0.0.127
+        cargo install holochain_cli --version 0.0.28
+        ./scripts/copy-hc.sh
+    - name: Build Holochain (Windows)
+      env:
+        SQLCIPHER_STATIC: 1
+      if: matrix.platform == 'windows-latest'
       run: |
         cargo install lair_keystore --version 0.0.9
         cargo install --locked holochain --git https://github.com/holochain/holochain.git --tag holochain-0.0.127
