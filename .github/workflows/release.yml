@@ -102,4 +102,3 @@ jobs:
         artifacts: "dist/ad4m-windows-x64.exe"
         token: ${{ secrets.GITHUB_TOKEN }}
         allowUpdates: false
-        draft: true
