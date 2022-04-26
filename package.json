@@ -1,6 +1,6 @@
 {
   "name": "ad4m-host",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "Self hosting ad4m service",
   "bin": {
     "ad4m": "build/cli.js"
@@ -20,8 +20,12 @@
     "scripts": "build/**/*",
     "assets": [
       "temp/**/*",
+      "temp/binary/hc.exe",
+      "temp/binary/holochain.exe",
+      "temp/binary/lair-keystore.exe",
       "node_modules/leveldown/**/*",
-      "node_modules/ts-invariant/**/*"
+      "node_modules/ts-invariant/**/*",
+      "node_modules/@apollo/client/node_modules/ts-invariant/**/*"
     ],
     "outputPath": "dist",
     "patches": {
