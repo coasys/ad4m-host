@@ -40,6 +40,8 @@ jobs:
         cargo install --locked holochain --git https://github.com/holochain/holochain.git --tag holochain-0.0.127
         cargo install holochain_cli --version 0.0.28
         ./scripts/copy-hc.sh
+    - name: List binaries
+      run: ls -al temp/binary
     
     - name: Build the binary (macos-latest)
       if: matrix.platform == 'macos-latest'
