@@ -79,17 +79,29 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
 
   if(!hcOnly) {
     const holochainSource = path.join(__dirname, `../../temp/binary/${holochain}`);
+
+    console.log('haha 1', fs.existsSync(holochainSource))
+
     const holochaintarget = path.join(binaryPath, holochain);
     await copy(holochainSource, holochaintarget);
     await chmod(holochaintarget, '755');
   
     const lairSource = path.join(__dirname, `../../temp/binary/${lair}`);
+
+    console.log('haha 1', fs.existsSync(lairSource))
+
     const lairTarget = path.join(binaryPath, lair);
     await copy(lairSource, lairTarget);
     await chmod(lairTarget, '755');
   }
 
   const hcSource = path.join(__dirname, `../../temp/binary/${hc}`);
+
+  console.log('haha 2', fs.existsSync(hcSource))
+
+  console.log('haha 3', fs.readdirSync(path.join(__dirname, `../../`)))
+  console.log('haha 4', fs.readdirSync(path.join(__dirname, `../../temp/binary`)))
+
   const hcTarget = path.join(binaryPath, hc);
   await copy(hcSource, hcTarget);
   await chmod(hcTarget, '755');
