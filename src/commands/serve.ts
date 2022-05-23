@@ -71,7 +71,7 @@ export const builder = (yargs: Argv) =>
       },
       reqCredential: {
         type: 'string',
-        describe: 'The credential for admin client to make request',
+        describe: 'The credential for an admin client to override capability checks',
       }
     });
 
