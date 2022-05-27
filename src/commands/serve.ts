@@ -18,6 +18,7 @@ type Options = {
   bootstrapPerspective?: string;
   appLangAliases?: string;
   dataPath?: string;
+  reqCredential?: string;
 };
 
 export const command: string = 'serve';
@@ -67,11 +68,19 @@ export const builder = (yargs: Argv) =>
         type: 'string',
         describe: 'Language aliases to be loaded into ad4m-executor',
         default: '{}'
+      },
+      reqCredential: {
+        type: 'string',
+        describe: 'The credential for an admin client to override capability checks',
       }
     });
 
 export const handler = async (argv: Arguments<Options>): Promise<void> => {
-  const { port, hcAdminPort, hcAppPort, connectHolochain, languageLanguageOnly, dataPath, bootstrapLanguage, bootstrapPerspective, appLangAliases } = argv;
+  const {
+    port, hcAdminPort, hcAppPort, connectHolochain, languageLanguageOnly,
+    dataPath, bootstrapLanguage, bootstrapPerspective, appLangAliases,
+    reqCredential
+  } = argv;
 
   const globalConfig = getConfig();
 
@@ -111,6 +120,7 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
     hcPortApp: hcAppPort,
     ipfsRepoPath: appDataPath,
     connectHolochain,
+    reqCredential,
   };
 
   const ad4mCore = await init(config);
