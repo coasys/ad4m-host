@@ -1,6 +1,6 @@
 {
   "name": "ad4m-host",
-  "version": "0.0.12",
+  "version": "0.0.21",
   "description": "Self hosting ad4m service",
   "bin": {
     "ad4m": "build/cli.js"
@@ -20,8 +20,12 @@
     "scripts": "build/**/*",
     "assets": [
       "temp/**/*",
+      "temp/binary/hc.exe",
+      "temp/binary/holochain.exe",
+      "temp/binary/lair-keystore.exe",
       "node_modules/leveldown/**/*",
-      "node_modules/ts-invariant/**/*"
+      "node_modules/ts-invariant/**/*",
+      "node_modules/@apollo/client/node_modules/ts-invariant/**/*"
     ],
     "outputPath": "dist",
     "patches": {
@@ -43,9 +47,9 @@
   "homepage": "https://github.com/fluxsocial/ad4m-host#readme",
   "dependencies": {
     "@apollo/client": "3.4.17",
-    "@perspect3vism/ad4m": "file:../ad4m",
-    "@perspect3vism/ad4m-executor": "file:../ad4m-executor",
-    "appdata-path": "^1.0.0",
+    "@perspect3vism/ad4m": "^0.1.29",
+    "@perspect3vism/ad4m-executor": "^0.1.36",
+    "appdata-path": "perspect3vism/appdata-path",
     "esm": "^3.2.25",
     "fs-extra": "^9.1.0",
     "get-port": "5.1.1",

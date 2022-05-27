@@ -27,19 +27,62 @@ jobs:
       uses: actions-rs/toolchain@v1
       with:
         override: true
-        toolchain: 1.58
-    
+        toolchain: 1.60.0
+    - name: Cache cargo
+      id: cache-cargo
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cargo/bin/
+          ~/.cargo/registry/index/
+          ~/.cargo/registry/cache/
+          ~/.cargo/git/db/
+          target/
+        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          ${{ runner.os }}-cargo
     - name: Install dependencies
       run: npm install
-    - name: Build Holochain 
+    - name: Build Holochain (Ubuntu)
       env:
         SQLCIPHER_STATIC: 1
+      if: matrix.platform == 'ubuntu-latest'
       run: |
-        cargo install lair_keystore --git https://github.com/guillemcordoba/lair --rev 8c0a3683d93540301af53688ea431c7cc0beb438
+        cargo install lair_keystore --version 0.0.9
         cargo install --locked holochain --git https://github.com/holochain/holochain.git --tag holochain-0.0.127
         cargo install holochain_cli --version 0.0.28
         ./scripts/copy-hc.sh
-    
+    - name: Build Holochain (MacOs)
+      env:
+        SQLCIPHER_STATIC: 1
+      if: matrix.platform == 'macos-latest'
+      run: |
+        cargo install lair_keystore --version 0.0.9
+        cargo install --locked holochain --git https://github.com/holochain/holochain.git --tag holochain-0.0.127
+        cargo install holochain_cli --version 0.0.28
+        ./scripts/copy-hc.sh
+    - name: Build Holochain (Windows)
+      env:
+        SQLCIPHER_STATIC: 1
+      if: matrix.platform == 'windows-latest'
+      run: |
+        cargo install lair_keystore --version 0.0.9
+        cargo install --locked holochain --git https://github.com/holochain/holochain.git --tag holochain-0.0.127
+        cargo install holochain_cli --version 0.0.28
+
+        mkdir temp/binary
+
+        $LkPath = Get-Command lair-keystore | Select-Object -ExpandProperty Definition
+        Copy-Item $LkPath -Destination temp/binary/lair-keystore.exe
+
+        $HcPath = Get-Command holochain | Select-Object -ExpandProperty Definition
+        Copy-Item $HcPath -Destination temp/binary/holochain.exe
+
+        $HciPath = Get-Command hc | Select-Object -ExpandProperty Definition
+        Copy-Item $HciPath -Destination temp/binary/hc.exe
+    - name: List binaries
+      run: ls temp/binary
     - name: Build the binary (macos-latest)
       if: matrix.platform == 'macos-latest'
       run: npm run build && npm run package-macos
