@@ -91,6 +91,7 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
   const { seedPath } = globalConfig[dataPath || ''];
 
   const binaryPath = path.join(getAppDataPath(dataPath || 'ad4m'), 'binary');
+  const swiplHomePath = path.join(getAppDataPath(dataPath || 'ad4m'), 'lib/swipl');
 
   const gqlPort = await getPort({ port })
 
@@ -121,6 +122,7 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
     ipfsRepoPath: appDataPath,
     connectHolochain,
     reqCredential,
+    swiplHomePath
   };
 
   const ad4mCore = await init(config);
