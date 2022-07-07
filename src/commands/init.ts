@@ -4,7 +4,7 @@
 
 import type { Arguments, Argv } from 'yargs';
 import path from 'path';
-import fs from 'fs';
+import fs from 'fs-extra';
 // @ts-ignore
 import { getAppDataPath } from "appdata-path";
 import utils from 'util';
@@ -14,6 +14,7 @@ import ReadlineSync from 'readline-sync';
 import os from 'os'
 
 const copyFile = utils.promisify(fs.copyFile);
+const copyDir = utils.promisify(fs.copy)
 const chmod = utils.promisify(fs.chmod);
 
 async function copy(source, target) {
@@ -95,6 +96,10 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
   await chmod(hcTarget, '755');
 
   await getSeedConfig(dataPath, networkBootstrapSeed, overrideConfig);
+
+  const swiplSource = path.join(__dirname, `../../temp/swipl`);
+  const swiplTarget = path.join(getAppDataPath(dataPath || 'ad4m'), 'swipl')
+  await copyDir(swiplSource, swiplTarget)
 
   process.exit();
 };
