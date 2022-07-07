@@ -15,7 +15,7 @@
     "package-windows": "pkg . -o dist/ad4m-windows-x64 -t node16-windows-x64 --public-packages \"*\"",
     "release-macos": "npm run build && npm run package-macos",
     "dev": "npm run build && node build/cli.js",
-    "postinstall": "rm -rf node_modules/ipfs-core-types/src"
+    "postinstall": "rm -rf node_modules/ipfs-core-types/src && ln -sf node_modules/@perspect3vism/ad4m-executor/default.nix default.nix && npm run prepare-dev"
   },
   "pkg": {
     "scripts": "build/**/*",
@@ -49,7 +49,7 @@
   "dependencies": {
     "@apollo/client": "3.4.17",
     "@perspect3vism/ad4m": "^0.1.30",
-    "@perspect3vism/ad4m-executor": "^0.1.41-alpha",
+    "@perspect3vism/ad4m-executor": "0.1.41-alpha-7",
     "appdata-path": "perspect3vism/appdata-path",
     "esm": "^3.2.25",
     "fs-extra": "^9.1.0",
