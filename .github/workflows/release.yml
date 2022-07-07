@@ -48,6 +48,7 @@ jobs:
       with:
         nix_path: nixpkgs=channel:nixos-unstable
     - name: Use Cachix
+      if: matrix.platform == 'ubuntu-latest' || matrix.platform == 'macos-latest'
       uses: cachix/cachix-action@v9
       with:
         name: perspect3vism
