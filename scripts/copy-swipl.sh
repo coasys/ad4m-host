@@ -10,6 +10,9 @@ echo "Copied swipl lib dir to temp"
 
 chmod -R +w temp/swipl
 
+echo "Copy node-swipl-stdio's top.pl to swipl home dir"
+cp node_modules/swipl-stdio/top.pl temp/swipl/lib/swipl/
+
 echo "Replacing all symlinks with their target"
 cd ./temp/swipl
 find -type l -exec sh -c 'PREV=$(realpath -- "$1") && rm -- "$1" && cp -ar -- "$PREV" "$1"' resolver {} \;
