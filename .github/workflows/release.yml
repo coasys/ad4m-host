@@ -42,26 +42,25 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
           ${{ runner.os }}-cargo
+    - name: Install Nix
+      if: matrix.platform == 'ubuntu-latest' || matrix.platform == 'macos-latest'
+      uses: cachix/install-nix-action@v13
+      with:
+        nix_path: nixpkgs=channel:nixos-unstable
+    - name: Use Cachix
+      uses: cachix/cachix-action@v9
+      with:
+        name: perspect3vism
+        # If you chose API tokens for write access OR if you have a private cache
+        authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}' 
     - name: Install dependencies
       run: npm install
-    - name: Build Holochain (Ubuntu)
+    - name: Build Holochain (Ubuntu|macOS)
       env:
         SQLCIPHER_STATIC: 1
-      if: matrix.platform == 'ubuntu-latest'
+      if: matrix.platform == 'ubuntu-latest' || matrix.platform == 'macos-latest'
       run: |
-        cargo install lair_keystore --version 0.0.9
-        cargo install --locked holochain --git https://github.com/holochain/holochain.git --tag holochain-0.0.127
-        cargo install holochain_cli --version 0.0.28
-        ./scripts/copy-hc.sh
-    - name: Build Holochain (MacOs)
-      env:
-        SQLCIPHER_STATIC: 1
-      if: matrix.platform == 'macos-latest'
-      run: |
-        cargo install lair_keystore --version 0.0.9
-        cargo install --locked holochain --git https://github.com/holochain/holochain.git --tag holochain-0.0.127
-        cargo install holochain_cli --version 0.0.28
-        ./scripts/copy-hc.sh
+        npm run build-holochain
     - name: Build Holochain (Windows)
       env:
         SQLCIPHER_STATIC: 1
@@ -81,6 +80,20 @@ jobs:
 
         $HciPath = Get-Command hc | Select-Object -ExpandProperty Definition
         Copy-Item $HciPath -Destination temp/binary/hc.exe
+    - name: Copy swipl (Ubuntu)
+      env:
+        SQLCIPHER_STATIC: 1
+      if: matrix.platform == 'ubuntu-latest'
+      run: |
+        npm run copy-swipl
+        npm run relink-swipl-linux
+    - name: Copy swipl (macOs)
+      env:
+        SQLCIPHER_STATIC: 1
+      if: matrix.platform == 'macos-latest'
+      run: |
+        npm run copy-swipl
+        npm run relink-swipl-macos
     - name: List binaries
       run: ls temp/binary
     - name: Build the binary (macos-latest)
