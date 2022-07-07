@@ -17,7 +17,7 @@
     "package-windows": "pkg . -o dist/ad4m-windows-x64 -t node16-windows-x64 --public-packages \"*\"",
     "release-macos": "npm run build && npm run package-macos",
     "dev": "npm run build && node build/cli.js",
-    "postinstall": "rm -rf node_modules/ipfs-core-types/src && ln -sf node_modules/@perspect3vism/ad4m-executor/default.nix default.nix && npm run prepare-dev"
+    "postinstall": "rm -rf node_modules/ipfs-core-types/src && ln -sf node_modules/@perspect3vism/ad4m-executor/default.nix default.nix"
 
   },
   "pkg": {
