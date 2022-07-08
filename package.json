@@ -11,6 +11,7 @@
     "copy-swipl": "echo \"\n\n\n\nThis next stage will fail if Nix is not installed!! You can install here: https://nixos.wiki/wiki/Nix_Installation_Guide\" && sleep 5 && nix-shell --run ./scripts/copy-swipl.sh",
     "relink-swipl-macos": "./scripts/relink-swipl-macos.sh",
     "relink-swipl-linux": "./scripts/relink-swipl-linux.sh",
+    "copy-swipl-windows": "@powershell -NoProfile -ExecutionPolicy Unrestricted -Command scripts\\copy-swipl.ps1",
     "build": "tsc",
     "package-macos": "pkg . -o dist/ad4m-macos-x64 -t node16-macos-x64 --public-packages \"*\"",
     "package-linux": "pkg . -o dist/ad4m-linux-x64 -t node16-linux-x64 --public-packages \"*\"",

@@ -100,8 +100,7 @@ jobs:
         SQLCIPHER_STATIC: 1
       if: matrix.platform == 'windows-latest'
       run: |
-        choco install swi-prolog
-        Copy-Item -Recurse -Path "C:\Program Files\swipl" -Destination temp/
+        npm run copy-swipl-windows
     - name: List binaries
       run: ls temp/binary
     - name: Build the binary (macos-latest)
