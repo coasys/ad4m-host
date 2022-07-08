@@ -95,7 +95,7 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
   let ad4mPath = ad4mDataDirectory(dataPath)
 
   const binaryPath = path.join(ad4mPath, 'binary');
-  const swiplHomePath = path.join(ad4mPath, 'swipl/lib/swipl/')
+  const swiplHomePath = (process.platform == "win32" ? path.join(ad4mPath, 'swipl/') : path.join(ad4mPath, 'swipl/lib/swipl/'))
   const swiplPath = path.join(ad4mPath, 'swipl/bin/swipl');
   const gqlPort = await getPort({ port })
 
