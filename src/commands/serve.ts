@@ -4,9 +4,11 @@ import { init } from "@perspect3vism/ad4m-executor";
 import path from 'path';
 import fs from 'fs';
 // @ts-ignore
-import { getAppDataPath } from "appdata-path";
 import getPort from 'get-port';
 import { getConfig } from '../utils/config';
+import { ad4mDataDirectory } from '../ad4mDataDirectory';
+import { homedir } from 'os';
+
 
 type Options = {
   port?: number;
@@ -90,11 +92,13 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
 
   const { seedPath } = globalConfig[dataPath || ''];
 
-  const binaryPath = path.join(getAppDataPath(dataPath || 'ad4m'), 'binary');
+  let appDataPath = ad4mDataDirectory(dataPath)
 
+  const binaryPath = path.join(appDataPath, 'binary');
+  const swiplHomePath = (process.platform == "win32" ? path.join(appDataPath, 'swipl/') : path.join(appDataPath, 'swipl/lib/swipl/'))
+  const swiplPath = path.join(appDataPath, 'swipl/bin/swipl');
   const gqlPort = await getPort({ port })
-
-  const appDataPath = getAppDataPath(dataPath || '');
+  const ipfsRepoPath = path.join(appDataPath, 'ipfs')
 
   if (!fs.existsSync(appDataPath)) {
     fs.mkdirSync(appDataPath);
@@ -118,9 +122,11 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
     gqlPort,
     hcPortAdmin: hcAdminPort,
     hcPortApp: hcAppPort,
-    ipfsRepoPath: appDataPath,
+    ipfsRepoPath,
     connectHolochain,
     reqCredential,
+    swiplPath,
+    swiplHomePath
   };
 
   const ad4mCore = await init(config);

@@ -3,3 +3,4 @@ temp
 .DS_Store
 dist
 build
+default.nix

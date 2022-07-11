@@ -4,16 +4,17 @@
 
 import type { Arguments, Argv } from 'yargs';
 import path from 'path';
-import fs from 'fs';
+import fs from 'fs-extra';
 // @ts-ignore
-import { getAppDataPath } from "appdata-path";
 import utils from 'util';
 import { fetchLatestBootstrapSeed, MAINNET_SEED } from '../utils/fetchLatestBootstrapSeed';
 import { CONFIG, getConfig } from '../utils/config';
 import ReadlineSync from 'readline-sync';
 import os from 'os'
+import { ad4mDataDirectory } from '../ad4mDataDirectory';
 
 const copyFile = utils.promisify(fs.copyFile);
+const copyDir = utils.promisify(fs.copy)
 const chmod = utils.promisify(fs.chmod);
 
 async function copy(source, target) {
@@ -66,7 +67,8 @@ export const builder = (yargs: Argv) =>
 
 export const handler = async (argv: Arguments<Options>): Promise<void> => {
   const { hcOnly, dataPath = '', networkBootstrapSeed, overrideConfig } = argv;
-  const binaryPath = path.join(getAppDataPath(dataPath || 'ad4m'), 'binary')
+  const appDataPath = ad4mDataDirectory(dataPath)
+  const binaryPath = path.join(appDataPath, 'binary')
   
   if(!fs.existsSync(binaryPath)) {
     fs.mkdirSync(binaryPath, { recursive: true })
@@ -96,11 +98,15 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
 
   await getSeedConfig(dataPath, networkBootstrapSeed, overrideConfig);
 
+  const swiplSource = path.join(__dirname, `../../temp/swipl`);
+  const swiplTarget = path.join(appDataPath, 'swipl')
+  await copyDir(swiplSource, swiplTarget)
+
   process.exit();
 };
 
 async function getSeedFilePath(dataPath?: string, networkBootstrapSeed?: string) {
-  const appDataPath = getAppDataPath(dataPath || '');
+  const appDataPath = ad4mDataDirectory(dataPath)
 
   if (!networkBootstrapSeed) {
     console.log("No bootstrap seed supplied... downloading the latest AD4M bootstrap seed");
@@ -151,7 +157,7 @@ async function getSeedConfig(dataPath?: string, networkBootstrapSeed?: string, o
     seedPath
   }
 
-  const dest = path.join(getAppDataPath(''), CONFIG);
+  const dest = path.join(ad4mDataDirectory(), CONFIG);
 
   globalConfig[configDataPath] = config;
 
