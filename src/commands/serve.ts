@@ -92,14 +92,13 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
 
   const { seedPath } = globalConfig[dataPath || ''];
 
-  let ad4mPath = ad4mDataDirectory(dataPath)
+  let appDataPath = ad4mDataDirectory(dataPath)
 
-  const binaryPath = path.join(ad4mPath, 'binary');
-  const swiplHomePath = (process.platform == "win32" ? path.join(ad4mPath, 'swipl/') : path.join(ad4mPath, 'swipl/lib/swipl/'))
-  const swiplPath = path.join(ad4mPath, 'swipl/bin/swipl');
+  const binaryPath = path.join(appDataPath, 'binary');
+  const swiplHomePath = (process.platform == "win32" ? path.join(appDataPath, 'swipl/') : path.join(appDataPath, 'swipl/lib/swipl/'))
+  const swiplPath = path.join(appDataPath, 'swipl/bin/swipl');
   const gqlPort = await getPort({ port })
-
-  let appDataPath = homedir()
+  const ipfsRepoPath = path.join(appDataPath, 'ipfs')
 
   if (!fs.existsSync(appDataPath)) {
     fs.mkdirSync(appDataPath);
@@ -123,7 +122,7 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
     gqlPort,
     hcPortAdmin: hcAdminPort,
     hcPortApp: hcAppPort,
-    ipfsRepoPath: appDataPath,
+    ipfsRepoPath,
     connectHolochain,
     reqCredential,
     swiplPath,
