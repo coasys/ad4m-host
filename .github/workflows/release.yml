@@ -67,9 +67,9 @@ jobs:
         SQLCIPHER_STATIC: 1
       if: matrix.platform == 'windows-latest'
       run: |
-        cargo install lair_keystore --version 0.1.0
-        cargo install --locked holochain --git https://github.com/holochain/holochain.git --tag holochain-0.0.127
-        cargo install holochain_cli --version 0.0.28
+        cargo install lair_keystore --version 0.2.0
+        cargo install --locked holochain --git https://github.com/holochain/holochain.git --tag holochain-0.0.151
+        cargo install holochain_cli --version 0.0.49
 
         mkdir temp/binary
 

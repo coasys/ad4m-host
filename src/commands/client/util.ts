@@ -1,7 +1,8 @@
 import { Ad4mClient } from '@perspect3vism/ad4m';
-import { ApolloClient, InMemoryCache } from '@apollo/client';
-import { WebSocketLink } from '@apollo/client/link/ws';
-import WebSocket from 'ws';
+import { ApolloClient, InMemoryCache } from '@apollo/client/core';
+import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
+import { createClient } from "graphql-ws";
+import Websocket from "ws";
 import ReadlineSync from 'readline-sync';
 import util from 'util';
 
@@ -11,24 +12,30 @@ export type CommonOptions = {
 }
 
 export function buildAd4mClient(server: string): Ad4mClient {
-  let apolloClient = new ApolloClient({
-    link: new WebSocketLink({
-      uri: server,
-      options: { reconnect: true },
-      webSocketImpl: WebSocket,
-    }),
+  const wsLink = new GraphQLWsLink(createClient({
+    url: server,
+    webSocketImpl: Websocket,
+    connectionParams: () => {
+        return {
+            headers: {
+                authorization: ""
+            }
+        }
+    },
+  }));
+  const apolloClient = new ApolloClient({
+    link: wsLink,
     cache: new InMemoryCache({ resultCaching: false, addTypename: false }),
     defaultOptions: {
-      watchQuery: {
-        fetchPolicy: "no-cache",
-      },
-      query: {
-        fetchPolicy: "no-cache",
-      }
+        watchQuery: {
+            fetchPolicy: "no-cache",
+        },
+        query: {
+            fetchPolicy: "no-cache",
+        }
     },
   });
 
-  //@ts-ignore
   return new Ad4mClient(apolloClient);
 }
 
