@@ -129,14 +129,5 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
     swiplHomePath
   };
 
-  const ad4mCore = await init(config);
-  
-  await ad4mCore.waitForAgent();
-  console.log("Agent has been init'd. Controllers now starting init...");
-
-  ad4mCore.initControllers();
-  console.log("Controllers init complete. Initializing languages...");
-
-  await ad4mCore.initLanguages();
-  console.log("All languages initialized.");
+  await init(config);
 };
