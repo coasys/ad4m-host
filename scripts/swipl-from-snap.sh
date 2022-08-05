@@ -4,10 +4,11 @@ rm -rf ./temp/swipl
 mkdir ./temp/swipl
 mkdir ./temp/swipl/bin
 
-SWIPL_BIN=/usr/bin/swipl
+SWIPL_BIN=`which swipl`
 cp $SWIPL_BIN ./temp/swipl/bin
 
-SWIPL_MAIN_DIR=/usr/lib/swi-prolog
+SWIPL_BIN_DIR=`dirname $SWIPL_BIN`
+SWIPL_MAIN_DIR="$SWIPL_BIN_DIR/../lib/swi-prolog"
 
 mkdir ./temp/swipl/lib
 cp -r $SWIPL_MAIN_DIR ./temp/swipl/lib/swipl
