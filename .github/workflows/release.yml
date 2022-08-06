@@ -99,10 +99,8 @@ jobs:
         SQLCIPHER_STATIC: 1
       if: matrix.platform == 'ubuntu-latest'
       run: |        
-        sudo apt install snapd
-        sudo snap install swi-prolog
-
-        ./scripts/swipl-from-snap.sh
+        sudo apt install unzip
+        ./scripts/unpack-swipl.sh
     - name: Copy swipl (macOs)
       env:
         SQLCIPHER_STATIC: 1

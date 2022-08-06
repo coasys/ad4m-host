@@ -14,6 +14,10 @@ mkdir ./temp/swipl/lib
 cp -r $SWIPL_MAIN_DIR ./temp/swipl/lib/swipl
 echo "Copied swipl lib dir to temp"
 
+rm -rf ./temp/swipl/lib/swipl/doc
+rm -rf ./temp/swipl/lib/swipl/demo
+rm -rf ./temp/swipl/lib/swipl/bin
+
 chmod -R +w temp/swipl
 
 echo "Copy node-swipl-stdio's top.pl to swipl home dir"
