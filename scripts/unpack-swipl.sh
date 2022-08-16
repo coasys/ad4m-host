@@ -1,1 +1,1 @@
-unzip vendor/swipl-linux.zip -d temp/swipl
+unzip vendor/swipl-linux.zip -d temp
