@@ -67,19 +67,31 @@ jobs:
       run: |
         [ ! -d "./temp/binary" ] && mkdir -p "./temp/binary"
 
-    - name: Build Holochain (Windows)
+        wget https://github.com/perspect3vism/ad4m-host/releases/download/binary-deps-0.0.161/hc-linux-0.0.56
+        mv hc-linux-0.0.56 temp/binary/hc
+        chmod +x temp/binary/hc
+
+        wget https://github.com/perspect3vism/ad4m-host/releases/download/binary-deps-0.0.161/holochain-linux-0.0.161
+        mv holochain-linux-0.0.161 temp/binary/holochain
+        chmod +x temp/binary/holochain
+
+        wget https://github.com/perspect3vism/ad4m-host/releases/download/binary-deps-0.0.161/lair-keystore-linux-0.2.0
+        mv lair-keystore-linux-0.2.0 temp/binary/lair-keystore
+        chmod +x temp/binary/lair-keystore
+
+    - name: Get Binaries (Windows)
       if: matrix.platform == 'windows-latest'
       run: |
         mkdir temp/binary
 
-        $LkPath = Get-Command lair-keystore | Select-Object -ExpandProperty Definition
-        Copy-Item $LkPath -Destination temp/binary/lair-keystore.exe
+        wget https://github.com/perspect3vism/ad4m-host/releases/download/binary-deps-0.0.161/hc-windows-0.0.56.exe
+        Copy-Item hc-windows-0.0.56.exe -Destination temp/binary/hc.exe
 
-        $HcPath = Get-Command holochain | Select-Object -ExpandProperty Definition
-        Copy-Item $HcPath -Destination temp/binary/holochain.exe
+        wget https://github.com/perspect3vism/ad4m-host/releases/download/binary-deps-0.0.161/holochain-windows-0.0.161.exe
+        Copy-Item holochain-windows-0.0.161.exe -Destination temp/binary/holochain.exe
 
-        $HciPath = Get-Command hc | Select-Object -ExpandProperty Definition
-        Copy-Item $HciPath -Destination temp/binary/hc.exe
+        wget https://github.com/perspect3vism/ad4m-host/releases/download/binary-deps-0.0.161/lair-keystore-windows-0.2.0.exe
+        Copy-Item lair-keystore-windows-0.2.0.exe -Destination temp/binary/lair-keystore.exe
 
     - name: Copy swipl (Ubuntu)
       env:
