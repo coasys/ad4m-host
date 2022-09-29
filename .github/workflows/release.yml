@@ -82,6 +82,8 @@ jobs:
     - name: Get Binaries (Windows)
       if: matrix.platform == 'windows-latest'
       run: |
+        choco install wget --no-progress
+        
         mkdir temp/binary
 
         wget https://github.com/perspect3vism/ad4m-host/releases/download/binary-deps-0.0.161/hc-windows-0.0.56.exe
