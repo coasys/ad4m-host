@@ -127,15 +127,15 @@ jobs:
 
     - name: Copy binary to include node version (macOS)
       if: matrix.platform == 'macos-latest'
-      run: cp dist/ad4m-macos-x64 dist/ad4m-macos-x64-node-${{ matrix.node-version }}"
+      run: cp dist/ad4m-macos-x64 dist/ad4m-macos-x64-node-${{ matrix.node-version }}
     
     - name: Copy binary to include node version (Linux)
       if: matrix.platform == 'ubuntu-latest'
-      run: cp dist/ad4m-linux-x64 dist/ad4m-linux-x64-node-${{ matrix.node-version }}"
+      run: cp dist/ad4m-linux-x64 dist/ad4m-linux-x64-node-${{ matrix.node-version }}
 
     - name: Copy binary to include node version (Windows)
       if: matrix.platform == 'windows-latest'
-      run: Copy-Item dist/ad4m-windows-x64.exe dist/ad4m-windows-x64-node-${{ matrix.node-version }}.exe"
+      run: Copy-Item dist/ad4m-windows-x64.exe dist/ad4m-windows-x64-node-${{ matrix.node-version }}.exe
 
     - name: Upload the binary (macos-latest)
       if: matrix.platform == 'macos-latest'
