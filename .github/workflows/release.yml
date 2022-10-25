@@ -125,6 +125,14 @@ jobs:
       if: matrix.platform == 'macos-latest'
       run: npm run build && npm run package-macos
 
+    - name: Build the binary (windows-latest)
+      if: matrix.platform == 'windows-latest'
+      run: npm run build && npm run package-windows
+
+    - name: Build the binary (linux-latest)
+      if: matrix.platform == 'ubuntu-latest'
+      run: npm run build && npm run package-linux
+
     - name: Copy binary to include node version (macOS)
       if: matrix.platform == 'macos-latest'
       run: cp dist/ad4m-macos-x64 dist/ad4m-macos-x64-node-${{ matrix.node-version }}
@@ -144,10 +152,7 @@ jobs:
         artifacts: "dist/ad4m-macos-x64-node-${{ matrix.node-version }}"
         token: ${{ secrets.GITHUB_TOKEN }}
         allowUpdates: true
-    
-    - name: Build the binary (linux-latest)
-      if: matrix.platform == 'ubuntu-latest'
-      run: npm run build && npm run package-linux
+
     - name: Upload the binary (linux-latest)
       if: matrix.platform == 'ubuntu-latest'
       uses: ncipollo/release-action@v1
@@ -155,10 +160,7 @@ jobs:
         artifacts: "dist/ad4m-linux-x64-node-${{ matrix.node-version }}"
         token: ${{ secrets.GITHUB_TOKEN }}
         allowUpdates: true
-    
-    - name: Build the binary (windows-latest)
-      if: matrix.platform == 'windows-latest'
-      run: npm run build && npm run package-windows
+  
     - name: Upload the binary (windows-latest)
       if: matrix.platform == 'windows-latest'
       uses: ncipollo/release-action@v1
